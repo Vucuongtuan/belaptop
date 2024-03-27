@@ -1,0 +1,37 @@
+[
+  {
+    "name": "Bàn phím cơ AKKO 3087 v2 DS Horizon Akko Switch V3 Cream Yellow",
+    "total": 1399000,
+    "thumbnail": [
+      "https://vtc-be-laptop.onrender.com/image/keyboard/akko-3087-v2-ds-horizon-akko-switch-v3-cream-yellow-1.webp",
+      "https://vtc-be-laptop.onrender.com/image/keyboard/akko-3087-v2-ds-horizon-akko-switch-v3-cream-yellow-2.webp",
+      "https://vtc-be-laptop.onrender.com/image/keyboard/akko-3087-v2-ds-horizon-akko-switch-v3-cream-yellow-3.webp",
+      "https://vtc-be-laptop.onrender.com/image/keyboard/akko-3087-v2-ds-horizon-akko-switch-v3-cream-yellow-4.webp",
+      "https://vtc-be-laptop.onrender.com/image/keyboard/akko-3087-v2-ds-horizon-akko-switch-v3-cream-yellow-5.webp",
+      "https://vtc-be-laptop.onrender.com/image/keyboard/akko-3087-v2-ds-horizon-akko-switch-v3-cream-yellow-6.webp",
+      "https://vtc-be-laptop.onrender.com/image/keyboard/akko-3087-v2-ds-horizon-akko-switch-v3-cream-yellow-7.webp"
+    ],
+    "layout": "Fullsize (87 phím)",
+    "switch_key": "Cream Yellow Akko switch v2",
+    "pin": null,
+    "personal": "",
+    "foam": null,
+    "weight": "360 x 140 x 40mm",
+    "size": "~0.95 kg",
+    "connector": ["USB Type-C, có thể tháo rời"],
+    "configuration": null,
+    "keycap": "PBT Dye-Subbed, OEM Profile",
+    "support": "NKRO / Multimedia / Macro / Khóa phím windows",
+    "accessory": "1 sách hướng dẫn sử dụng + 1 keypuller + 1 cover che bụi + 1 dây cáp USB Type-C to USB",
+    "software": "AKKO Cloud Driver",
+    "compatibility": "Windows / MacOS / Linux Bàn phím AKKO khi kết nối với MacOS: (Ctrl -> Control | Windows -> Command | Alt -> Option, Mojave OS trở lên sẽ điều chỉnh được thứ tự của các phím này)",
+    "discount_percent": 25,
+    "inventory": 22,
+    "product_type_keybourd": {
+      "$oid": "65aa9c1a3334f337b945665d"
+    },
+    "product_brand": {
+      "$oid": "65aa95f63334f337b9456649"
+    }
+  }
+]

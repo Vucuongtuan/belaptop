@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1><%= message %></h1>
+  <form method="get" action="http://localhost:4000/product/laptop" >
+    <p>Name:<input type="text" id="name"/></p>
+    <p>Total:<input type="text" id="total"/></p>
+    <p>description:<input type="text" id="description"/></p>
+    <p>thumbnail:<input type="file" id="thumbnail" multiple/></p>
+    <p>detail:
+      <hr>
+      <p>card-graphics :<input type="text" id="card-graphics"/></p>
+      <p>connector :<textarea  id="connector"></textarea> </p>
+      <p> cpu:<input type="text" id="cpu" /></p>
+      <p>hard_drive :<input type="text" id="hard_drive"/></p>
+      <p>pin :<input type="text" id="pin"/></p>
+      <p>ram :<input type="text" id="ram"/></p>
+      <p>screen :<input type="text" id="screen"/></p>
+      <p>audio :<input type="text" id="audio"/></p>
+      <p>brands :<input type="text" id="brands"/></p>
+      <p>cam :<input type="text" id="cam"/></p>
+      <p>keyboard :<input type="text" id="keyboard"/></p>
+      <p>size :<input type="text" id="size"/></p>
+      <p>system :<input type="text" id="system"/></p>
+      <p>weight :<input type="text" id="weight"/></p>
+      <p>wifi_bluetooth :<input type="text" id="wifi_bluetooth"/></p>
+    </p>
+    <p>totalPurchases :<input type="text" id="totalPurchases"/></p>
+    <p>product_brand :<input type="text" id="product_brand"/></p>
+    <p>product_category :<input type="text" id="product_category"/></p>
+    <p>discount_percent :<input type="text" id="discount_percent"/></p>
+    <p>inventory :<input type="text" id="inventory"/></p>
+    <p>brands :<input type="text" id="brands"/></p>
+    <button type="submit" onClick="addLaptop()">Add</button>
+  </form>
+  <script type="text/javascript">
+    function addLaptop() {
+var data = {
+  name: document.getElementById("name").value,
+            total: document.getElementById("total").value,
+            description: document.getElementById("description").value,
+            thumbnail: document.getElementById("thumbnail").files,
+            details: {
+                cardGraphics: document.getElementById("cardGraphics").value,
+                connector: document.getElementById("connector").value,
+                cpu: document.getElementById("cpu").value,
+                hardDrive: document.getElementById("hardDrive").value,
+                pin: document.getElementById("pin").value,
+                ram: document.getElementById("ram").value,
+                screen: document.getElementById("screen").value,
+                audio: document.getElementById("audio").value,
+                brands: document.getElementById("brands").value,
+                cam: document.getElementById("cam").value,
+                keyboard: document.getElementById("keyboard").value,
+                size: document.getElementById("size").value,
+                system: document.getElementById("system").value,
+                weight: document.getElementById("weight").value,
+                wifiBluetooth: document.getElementById("wifiBluetooth").value
+            },
+            totalPurchases: document.getElementById("totalPurchases").value,
+            productBrand: document.getElementById("productBrand").value,
+            productCategory: document.getElementById("productCategory").value,
+            discountPercent: document.getElementById("discountPercent").value,
+            inventory: document.getElementById("inventory").value,
+            brands: document.getElementById("laptopBrands").value
+        };
+fetch("http://localhost:4000/product/laptop",{
+  method:"POST",
+  body:data
+})
+  }
+  </script>
+  </body>
+</html>
