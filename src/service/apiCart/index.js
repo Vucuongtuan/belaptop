@@ -5,3 +5,4 @@ const routerCart = express.Router();
 
 routerCart.get("/", viewCart);
 routerCart.post("/", addToCart);
+module.exports = routerCart;
