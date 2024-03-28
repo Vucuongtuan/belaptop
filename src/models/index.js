@@ -26,8 +26,13 @@ const CartSchema = new Schema(
     email: String,
     phone: Number,
     address: String,
+    total: Number,
     items: [
       {
+        thumbnail: String,
+        description: String,
+        name: String,
+        total: Number,
         productId: { type: Schema.Types.ObjectId, required: true },
         quantity: { type: Number, default: 1 },
       },

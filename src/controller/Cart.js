@@ -42,28 +42,37 @@ const { User, Cart } = require("../models");
 
 const addToCart = async (req, res) => {
   try {
-    const { userId, listProduct, name, email, phone, address } = req.body;
-    const cartData = await User.findOne({ userId });
-    if (cartData.length === 0) {
-      res.json({ message: "Không thể lưu thông tin khách hàng" });
-    }
-    const idCart = cartData.data._id;
+    const { userId, listProduct, name, email, phone, address, total } =
+      req.body;
+    const idUser = await User.findOne({ _id: userId });
+    // if (idUser.length === 0) {
+    //   res.json({ message: "Không thể lưu thông tin khách hàng" });
+    // }
+    console.log("====================================");
+    console.log(idUser.cartID);
+    console.log("====================================");
+    const idCart = idUser.cartID;
     const insertDataCart = await Cart.findByIdAndUpdate(
-      { _id: idCart },
+      idCart,
       {
         name: name,
         email: email,
         phone: phone,
         address: address,
+        total: total,
         items: listProduct,
-      }
+      },
+      { new: true }
     );
     return res.json({
       message: "Mua hàng thành công",
       data: insertDataCart,
     });
   } catch (error) {
-    return res.status(500).send("Internal Server Error");
+    console.log("====================================");
+    console.log(error);
+    console.log("====================================");
+    return res.status(500).send(error);
   }
 };
 
