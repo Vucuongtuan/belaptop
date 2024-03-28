@@ -45,11 +45,9 @@ const addToCart = async (req, res) => {
     const { userId, listProduct, name, email, phone, address, total } =
       req.body;
     const idUser = await User.findOne({ _id: userId });
-    // if (idUser.length === 0) {
-    //   res.json({ message: "Không thể lưu thông tin khách hàng" });
-    // }
+
     console.log("====================================");
-    console.log(idUser.cartID);
+    console.log(idUser);
     console.log("====================================");
     const idCart = idUser.cartID;
     const insertDataCart = await Cart.findByIdAndUpdate(
