@@ -49,14 +49,15 @@ const addToCart = async (req, res) => {
     }
     const idCart = cartData.data._id;
     const insertDataCart = await Cart.findByIdAndUpdate(
-      { _id: idCart },
+      idCart,
       {
         name: name,
         email: email,
         phone: phone,
         address: address,
         items: listProduct,
-      }
+      },
+      { new: true }
     );
     return res.json({
       message: "Mua hàng thành công",
