@@ -44,5 +44,31 @@ const getAllProduct = async (req, res, next) => {
     });
   }
 };
+const getIdSiteMap = async (req, res) => {
+  try {
+    const getDataLaptop = await ProductLaptop.find({}, "_id");
+    const getDataMouse = await Mouse.find({}, "_id");
+    const getDataKeybourd = await Keybourd.find({}, "_id");
 
-module.exports = getAllProduct;
+    const allData = [...getDataLaptop, ...getDataMouse, ...getDataKeybourd];
+
+    if (allData.length === 0) {
+      return res.json({
+        message: "Không có dữ liệu",
+      });
+    }
+
+    const responseData = {
+      data: allData,
+    };
+
+    return res.json(responseData);
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      message: "Lỗi kết nối với Server",
+      error: err,
+    });
+  }
+};
+module.exports = { getAllProduct, getIdSiteMap };
