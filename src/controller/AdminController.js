@@ -1,5 +1,5 @@
 const { Admin } = require("../models");
-
+const jwt = require("jsonwebtoken");
 const getAdmin = async () => {
   try {
     const data = await Admin.find();
@@ -70,4 +70,40 @@ const getbyIDAdmin = async () => {
     res.status(500).json({ message: "Lỗi vui lòng thử lại sau" });
   }
 };
-module.exports = { getAdmin, postAdmin, deleteAdmin, getbyIDAdmin };
+const loginAdmin = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    if (!email || !password) {
+      return res.status(400).json({
+        message: "Vui lòng nhập tên đăng nhập và mật khẩu.",
+      });
+    }
+    const check = await User.findOne({ email, password });
+
+    if (!check.email) {
+      return res.status(401).json({
+        message: "Tài khoản không tồn tại.",
+      });
+    } else if (!check.password) {
+      return res.status(401).json({
+        message: "Mật khẩu không đúng",
+      });
+    }
+    const token = jwt.sign(
+      { email: check.email, Id: check._id },
+      process.env.PASS_JWT,
+      { expiresIn: "1h" }
+    );
+    res.status(200).json({
+      token,
+      username: check.name,
+      email: check.email,
+      userId: check._id,
+      expiresIn: 3600,
+      message: "Đăng nhập thành công",
+    });
+  } catch (err) {
+    res.status(500).json({ message: "Lỗi vui lòng thử lại sau" });
+  }
+};
+module.exports = { getAdmin, postAdmin, deleteAdmin, getbyIDAdmin, loginAdmin };
