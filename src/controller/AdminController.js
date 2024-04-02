@@ -54,4 +54,20 @@ const deleteAdmin = async () => {
     res.status(500).json({ message: "Lỗi vui lòng thử lại sau" });
   }
 };
-module.exports = { getAdmin, postAdmin, deleteAdmin };
+const getbyIDAdmin = async () => {
+  try {
+    const { id } = req.query;
+
+    const data = await Admin.findById(id);
+    if (data.length === 0) {
+      res.status(404).json({ message: "Không tìm thấy nhân viên nào" });
+    }
+    res.json({
+      data: data,
+      message: "Lấy thông tin nhân viên thành công",
+    });
+  } catch (err) {
+    res.status(500).json({ message: "Lỗi vui lòng thử lại sau" });
+  }
+};
+module.exports = { getAdmin, postAdmin, deleteAdmin, getbyIDAdmin };
