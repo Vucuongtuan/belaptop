@@ -11,5 +11,5 @@ routerAdmin.get("/", getAdmin);
 routerAdmin.post("/", postAdmin);
 // routerAdmin.patch("/q", updateAdmin);
 routerAdmin.delete("/q", deleteAdmin);
-routerAdmin.delete("/q", getbyIDAdmin);
+routerAdmin.get("/q", getbyIDAdmin);
 module.exports = routerAdmin;
