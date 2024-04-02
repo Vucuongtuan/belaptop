@@ -298,6 +298,15 @@ const otpSchema = new mongoose.Schema({
   otp: String,
   createdAt: { type: Date, default: Date.now, expires: 300 }, // Set expiry for 5 minutes
 });
+const AdminSchema = new mongoose.Schema({
+  email: String,
+  password: String,
+  phone: String,
+  dateOfBirth: Date,
+  name: String,
+  gender: String,
+  address: String,
+});
 const OTP = mongoose.model("Otp", otpSchema);
 const User = mongoose.model("User", UserSchema);
 const Brands = mongoose.model("brands", BrandsSchema);
@@ -315,6 +324,7 @@ const KeybourdType = mongoose.model(
   "type_product_keybourd",
   KeybourdTypeSchema
 );
+const Admin = mongoose.model("admin", AdminSchema);
 const PostContent = mongoose.model("post_content", PostContentSchema);
 module.exports = {
   User,
@@ -329,4 +339,5 @@ module.exports = {
   KeybourdType,
   PostContent,
   OTP,
+  Admin,
 };
