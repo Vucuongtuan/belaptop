@@ -74,18 +74,21 @@ const getbyIDAdmin = async (req, res, next) => {
 const loginAdmin = async (req, res) => {
   try {
     const { email, password } = req.body;
+
     if (!email || !password) {
       return res.status(400).json({
         message: "Vui lòng nhập tên đăng nhập và mật khẩu.",
       });
     }
-    const check = await User.findOne({ email, password });
-
-    if (!check.email) {
+    const check = await Admin.findOne({ email, password });
+    console.log("====================================");
+    console.log(check.email);
+    console.log("====================================");
+    if (check.email.length === 0) {
       return res.status(401).json({
         message: "Tài khoản không tồn tại.",
       });
-    } else if (!check.password) {
+    } else if (check.password.length === 0) {
       return res.status(401).json({
         message: "Mật khẩu không đúng",
       });
@@ -104,6 +107,7 @@ const loginAdmin = async (req, res) => {
       message: "Đăng nhập thành công",
     });
   } catch (err) {
+    console.log(err);
     res.status(500).json({ message: "Lỗi vui lòng thử lại sau" });
   }
 };
