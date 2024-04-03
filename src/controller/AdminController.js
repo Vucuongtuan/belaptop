@@ -1,6 +1,6 @@
 const { Admin } = require("../models");
 const jwt = require("jsonwebtoken");
-const getAdmin = async () => {
+const getAdmin = async (req, res, next) => {
   try {
     const data = await Admin.find();
     if (data.length === 0) {
@@ -13,11 +13,11 @@ const getAdmin = async () => {
     res.status(500).json({ message: "Lỗi vui lòng thử lại sau" });
   }
 };
-const postAdmin = async () => {
+const postAdmin = async (req, res, next) => {
   try {
     const { name, email, password, dateOfBirth, phone, address, gender } =
       req.body;
-
+    console.log(req.body);
     const data = await Admin.create({
       name,
       email,
@@ -35,10 +35,11 @@ const postAdmin = async () => {
       message: "Thêm mới nhân viên thành công",
     });
   } catch (err) {
-    res.status(500).json({ message: "Lỗi vui lòng thử lại sau" });
+    console.log(err);
+    return res.status(500).json({ message: "Lỗi vui lòng thử lại sau" });
   }
 };
-const deleteAdmin = async () => {
+const deleteAdmin = async (req, res, next) => {
   try {
     const { id } = req.query;
 
@@ -54,7 +55,7 @@ const deleteAdmin = async () => {
     res.status(500).json({ message: "Lỗi vui lòng thử lại sau" });
   }
 };
-const getbyIDAdmin = async () => {
+const getbyIDAdmin = async (req, res, next) => {
   try {
     const { id } = req.query;
 

@@ -306,6 +306,8 @@ const AdminSchema = new mongoose.Schema({
   name: String,
   gender: String,
   address: String,
+  create_date: { type: Date, default: Date.now },
+  update_date: { type: Date, default: Date.now },
 });
 const OTP = mongoose.model("Otp", otpSchema);
 const User = mongoose.model("User", UserSchema);
