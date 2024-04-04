@@ -71,7 +71,7 @@ const ProductLaptopSchema = new Schema(
         type: String,
       },
     ],
-    totalPurchases: Number,
+    totalPurchases: String,
     details: {
       cpu: String,
       ram: String,
@@ -137,7 +137,7 @@ const MouseSchema = new Schema(
     total: Number,
     guarantee: String,
     description: String,
-    totalPurchases: Number,
+    totalPurchases: String,
     brands: String,
     thumbnail: [
       {
