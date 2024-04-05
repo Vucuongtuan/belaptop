@@ -51,16 +51,22 @@ const getRevenue = async (req, res) => {
     const getDataKeybourd = await Keybourd.find({});
     const allData = [...getDataLaptop, ...getDataMouse, ...getDataKeybourd];
     let totalRevenue = 0;
-    allData.forEach((product) => {
-      totalRevenue += product.total * product.totalPurchases;
+    const products = allData.map(product => {
+      const revenue = product.total * product.totalPurchases;
+      totalRevenue += revenue;
+      return {
+        name: product.name,
+        revenue
+      };
     });
 
-    res.json({ totalRevenue });
+    res.json({ totalRevenue, products });
   } catch (err) {
     console.error("Error calculating total revenue:", err);
     res.status(500).json({ error: "Internal server error" });
   }
 };
+s
 
 const getIdSiteMap = async (req, res) => {
   try {
