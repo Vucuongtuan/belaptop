@@ -52,7 +52,7 @@ const getRevenue = async (req, res) => {
     const allData = [...getDataLaptop, ...getDataMouse, ...getDataKeybourd];
     let totalRevenue = 0;
     allData.forEach((product) => {
-      totalRevenue += product.total;
+      totalRevenue += product.total * product.totalPurchases;
     });
 
     res.json({ totalRevenue });
@@ -61,6 +61,7 @@ const getRevenue = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
+
 const getIdSiteMap = async (req, res) => {
   try {
     const getDataLaptop = await ProductLaptop.find({}, "_id");
