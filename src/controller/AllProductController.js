@@ -51,12 +51,13 @@ const getRevenue = async (req, res) => {
     const getDataKeybourd = await Keybourd.find({});
     const allData = [...getDataLaptop, ...getDataMouse, ...getDataKeybourd];
     let totalRevenue = 0;
-    const products = allData.map(product => {
+    const products = allData.map((product) => {
       const revenue = product.total * product.totalPurchases;
       totalRevenue += revenue;
       return {
+        thumbnailUrl: product.thumbnail[0],
         name: product.name,
-        revenue
+        revenue,
       };
     });
 
@@ -66,7 +67,6 @@ const getRevenue = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
-s
 
 const getIdSiteMap = async (req, res) => {
   try {
