@@ -44,6 +44,23 @@ const getAllProduct = async (req, res, next) => {
     });
   }
 };
+const getRevenue = async (req, res) => {
+  try {
+    const getDataLaptop = await ProductLaptop.find({});
+    const getDataMouse = await Mouse.find({});
+    const getDataKeybourd = await Keybourd.find({});
+    const allData = [...getDataLaptop, ...getDataMouse, ...getDataKeybourd];
+    let totalRevenue = 0;
+    allData.forEach((product) => {
+      totalRevenue += product.total;
+    });
+
+    res.json({ totalRevenue });
+  } catch (err) {
+    console.error("Error calculating total revenue:", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
 const getIdSiteMap = async (req, res) => {
   try {
     const getDataLaptop = await ProductLaptop.find({}, "_id");
@@ -71,4 +88,4 @@ const getIdSiteMap = async (req, res) => {
     });
   }
 };
-module.exports = { getAllProduct, getIdSiteMap };
+module.exports = { getAllProduct, getIdSiteMap, getRevenue };
