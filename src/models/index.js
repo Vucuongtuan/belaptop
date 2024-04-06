@@ -98,7 +98,6 @@ const ProductLaptopSchema = new Schema(
     product_category: {
       type: Schema.Types.ObjectId,
       ref: "type_product_laptop",
-      required: true,
     },
     product_brand: {
       type: Schema.Types.ObjectId,
@@ -179,7 +178,6 @@ const MouseSchema = new Schema(
     product_content: {
       type: Schema.Types.ObjectId,
       ref: "post_content",
-      required: true,
     },
   },
   {
@@ -252,7 +250,6 @@ const KeyboardSchema = new Schema(
     product_content: {
       type: Schema.Types.ObjectId,
       ref: "post_content",
-      required: true,
     },
   },
   {
@@ -309,6 +306,23 @@ const AdminSchema = new mongoose.Schema({
   create_date: { type: Date, default: Date.now },
   update_date: { type: Date, default: Date.now },
 });
+const RevenueSchema = new Schema(
+  {
+    total: [String],
+    products: [
+      {
+        _id: String,
+        thumbnailUrl: String,
+        name: String,
+        revenue: [String],
+      },
+    ],
+    create_product: { type: Date, default: Date.now },
+    update_product: { type: Date, default: Date.now },
+  },
+  { collection: "revenue" }
+);
+
 const OTP = mongoose.model("Otp", otpSchema);
 const User = mongoose.model("User", UserSchema);
 const Brands = mongoose.model("brands", BrandsSchema);
@@ -328,6 +342,7 @@ const KeybourdType = mongoose.model(
 );
 const Admin = mongoose.model("admin", AdminSchema);
 const PostContent = mongoose.model("post_content", PostContentSchema);
+const Revenue = mongoose.model("all_products", RevenueSchema);
 module.exports = {
   User,
   ProductTypeLaptop,
@@ -340,6 +355,7 @@ module.exports = {
   Keybourd,
   KeybourdType,
   PostContent,
+  Revenue,
   OTP,
   Admin,
 };

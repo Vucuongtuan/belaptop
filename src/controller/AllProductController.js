@@ -1,4 +1,4 @@
-const { ProductLaptop, Mouse, Keybourd } = require("../models/");
+const { ProductLaptop, Mouse, Keybourd, Revenue } = require("../models/");
 
 const PAGE_SIZE = 10;
 
@@ -7,11 +7,12 @@ const getAllProduct = async (req, res, next) => {
     const page = parseInt(req.query.page) || 1;
     const id = req.query.id;
 
-    const getDataLaptop = await ProductLaptop.find({});
-    const getDataMouse = await Mouse.find({});
-    const getDataKeybourd = await Keybourd.find({});
-
-    const allData = [...getDataLaptop, ...getDataMouse, ...getDataKeybourd];
+    const [getDataLaptop, getDataMouse, getDataKeyboard] = await Promise.all([
+      ProductLaptop.find({}),
+      Mouse.find({}),
+      Keybourd.find({}),
+    ]);
+    const allData = [...getDataLaptop, ...getDataMouse, ...getDataKeyboard];
 
     const filteredData = !id
       ? allData
@@ -46,22 +47,36 @@ const getAllProduct = async (req, res, next) => {
 };
 const getRevenue = async (req, res) => {
   try {
-    const getDataLaptop = await ProductLaptop.find({});
-    const getDataMouse = await Mouse.find({});
-    const getDataKeybourd = await Keybourd.find({});
-    const allData = [...getDataLaptop, ...getDataMouse, ...getDataKeybourd];
+    const [getDataLaptop, getDataMouse, getDataKeyboard, revenueDoc] =
+      await Promise.all([
+        ProductLaptop.find({}),
+        Mouse.find({}),
+        Keybourd.find({}),
+        Revenue.find({}),
+      ]);
+    const allData = [...getDataLaptop, ...getDataMouse, ...getDataKeyboard];
     let totalRevenue = 0;
     const products = allData.map((product) => {
       const revenue = product.total * product.totalPurchases;
       totalRevenue += revenue;
+
       return {
+        _id: product._id,
         thumbnailUrl: product.thumbnail[0],
         name: product.name,
         revenue,
       };
     });
 
-    res.json({ totalRevenue, products });
+    let total = revenueDoc[0].total;
+    if (totalRevenue !== revenueDoc[0].total[revenueDoc[0].total.length - 1]) {
+      total.push(totalRevenue);
+      await Revenue.updateMany({
+        totalRevenue: total,
+      });
+    }
+
+    res.json({ total, products });
   } catch (err) {
     console.error("Error calculating total revenue:", err);
     res.status(500).json({ error: "Internal server error" });

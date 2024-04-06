@@ -103,100 +103,99 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage: storage }).array("thumbnail", 7);
-// const postProduct = async (req, res, next) => {
-//   try {
-//     upload(req, res, async function (err) {
-//       if (err) {
-//         return res.status(500).json({
-//           message: "Lỗi khi tải lên hình ảnh.",
-//           error: err,
-//         });
-//       }
-
-//       const { data } = req.body;
-//       const thumbnail = req.file.filename;
-//       console.log(data);
-//       if (!thumbnail) {
-//         return res.status(400).json({
-//           message: "Thiếu hình ảnh.",
-//         });
-//       }
-
-//       const postProduct = await ProductLaptop.create({
-//         thumbnail: process.env.BASE_URL + "/image/laptop/" + thumbnail,
-//         name: data.name,
-//         brands: data.brands,
-//         total: data.total,
-//         description: data.description,
-//         totalPurchases: data.totalPurchases,
-//         details: data.details,
-
-//         discount_percent: data.discount_percent,
-//         inventory: data.inventory,
-//         product_category: data.product_category,
-//         product_brand: data.product_brand,
-//         product_content: data.product_content,
-//       });
-
-//       return res.json({
-//         message: "Thêm mới laptop thành công.",
-//         data: postProduct,
-//       });
-//     });
-//   } catch (err) {
-//     res.status(500).json({
-//       message: "Lỗi kết nối đến server !!!",
-//       error: err,
-//     });
-//   }
-// };
 const postProduct = async (req, res, next) => {
   try {
-    const data = req.body.data;
-    console.log("====================================");
-    console.log(req.body);
-    console.log("====================================");
-    let thumbnails = [];
-    if (req.file) {
-      thumbnails = [
-        {
-          data: req.file.buffer,
-          contentType: req.file.mimetype,
-        },
-      ];
-    }
-    const postProduct = await ProductLaptop.create({
-      name: data.name,
-      brands: data.brands,
-      total: data.total,
-      description: data.description,
-      thumbnail: thumbnails,
-      totalPurchases: data.totalPurchases,
-      details: data.details,
+    upload(req, res, async function (err) {
+      if (err) {
+        return res.status(500).json({
+          message: "Lỗi khi tải lên hình ảnh.",
+          error: err,
+        });
+      }
 
-      discount_percent: data.discount_percent,
-      inventory: data.inventory,
-      product_category: data.product_category,
-      product_brand: data.product_brand,
-      product_content: data.product_content,
-    });
-    console.log("====================================");
-    console.log(postProduct);
-    console.log("====================================");
-    return res.json({
-      product: postProduct,
-      message: "Thêm mới sản phẩm thành công ",
+      const { data } = req.body;
+      const thumbnail = req.file.filename;
+      console.log(data);
+      if (!thumbnail) {
+        return res.status(400).json({
+          message: "Thiếu hình ảnh.",
+        });
+      }
+
+      const postProduct = await ProductLaptop.create({
+        thumbnail: process.env.BASE_URL + "/image/laptop/" + thumbnail,
+        name: data.name,
+        brands: data.brands,
+        total: data.total,
+        description: data.description,
+        totalPurchases: data.totalPurchases,
+        details: data.details,
+        discount_percent: data.discount_percent,
+        inventory: data.inventory,
+        product_category: data.product_category,
+        product_brand: data.product_brand,
+        product_content: data.product_content,
+      });
+
+      return res.json({
+        message: "Thêm mới laptop thành công.",
+        data: postProduct,
+      });
     });
   } catch (err) {
-    console.log("====================================");
-    console.log(err);
-    console.log("====================================");
-    return res.json({
-      message: "Kết nối thất bại thử lại sau !!!",
-      error: err.toString(),
+    res.status(500).json({
+      message: "Lỗi kết nối đến server !!!",
+      error: err,
     });
   }
 };
+// const postProduct = async (req, res, next) => {
+//   try {
+//     const data = req.body.data;
+//     console.log("====================================");
+//     console.log(req.body);
+//     console.log("====================================");
+//     let thumbnails = [];
+//     if (req.file) {
+//       thumbnails = [
+//         {
+//           data: req.file.buffer,
+//           contentType: req.file.mimetype,
+//         },
+//       ];
+//     }
+//     const postProduct = await ProductLaptop.create({
+//       name: data.name,
+//       brands: data.brands,
+//       total: data.total,
+//       description: data.description,
+//       thumbnail: thumbnails,
+//       totalPurchases: data.totalPurchases,
+//       details: data.details,
+
+//       discount_percent: data.discount_percent,
+//       inventory: data.inventory,
+//       product_category: data.product_category,
+//       product_brand: data.product_brand,
+//       product_content: data.product_content,
+//     });
+//     console.log("====================================");
+//     console.log(postProduct);
+//     console.log("====================================");
+//     return res.json({
+//       product: postProduct,
+//       message: "Thêm mới sản phẩm thành công ",
+//     });
+//   } catch (err) {
+//     console.log("====================================");
+//     console.log(err);
+//     console.log("====================================");
+//     return res.json({
+//       message: "Kết nối thất bại thử lại sau !!!",
+//       error: err.toString(),
+//     });
+//   }
+// };
 const updateProduct = async (req, res, next) => {
   try {
     const id = req.query.id;
