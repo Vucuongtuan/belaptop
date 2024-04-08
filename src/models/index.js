@@ -195,7 +195,7 @@ const BannerQcSchema = new Schema(
 const BrandsSchema = new Schema(
   {
     name: String,
-    type: String,
+    type: [String],
     description: String,
     thumbnail: String,
   },

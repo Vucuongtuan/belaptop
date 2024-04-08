@@ -36,7 +36,7 @@ const getBrandsType = async (req, res, next) => {
   try {
     const { type } = req.body;
     const getData = await Brands.find({
-      type: { $regex: new RegExp(type, "i") },
+      type: { $in: [type] },
     });
     if (getData.length <= 0) {
       return res.status(404).json({
@@ -66,11 +66,12 @@ const postBrands = async (req, res, next) => {
           error: err.message,
         });
       }
-      const { name, description } = req.body;
+      const { name, description, type } = req.body;
       const thumbnail = req.file ? req.file.filename : null;
       const postData = await Brands.create({
         name,
         description,
+        type,
         thumbnail,
       });
 
@@ -92,11 +93,12 @@ const postBrands = async (req, res, next) => {
 const updateBrands = async (req, res, next) => {
   try {
     const id = req.query.id;
-    const { name, description } = req.body;
+    const { name, description, type } = req.body;
 
     const updateData = await Brands.findByIdAndUpdate(id, {
       name,
       description,
+      type,
     });
     if (updateData) {
       return res.json({
