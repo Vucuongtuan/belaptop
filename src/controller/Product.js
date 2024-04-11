@@ -105,42 +105,31 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage }).array("thumbnail", 7);
 const postProduct = async (req, res, next) => {
   try {
-    upload(req, res, async function (err) {
-      if (err) {
-        return res.status(500).json({
-          message: "Lỗi khi tải lên hình ảnh.",
-          error: err,
-        });
-      }
+    console.log("====================================");
+    console.log(req.body);
+    console.log("====================================");
+    const { data } = req.body;
 
-      const { data } = req.body;
-      const thumbnail = req.file.filename;
-      console.log(data);
-      if (!thumbnail) {
-        return res.status(400).json({
-          message: "Thiếu hình ảnh.",
-        });
-      }
+    console.log(data);
 
-      const postProduct = await ProductLaptop.create({
-        thumbnail: process.env.BASE_URL + "/image/laptop/" + thumbnail,
-        name: data.name,
-        brands: data.brands,
-        total: data.total,
-        description: data.description,
-        totalPurchases: data.totalPurchases,
-        details: data.details,
-        discount_percent: data.discount_percent,
-        inventory: data.inventory,
-        product_category: data.product_category,
-        product_brand: data.product_brand,
-        product_content: data.product_content,
-      });
+    const postProduct = await ProductLaptop.create({
+      thumbnail: data.thumbnail,
+      name: data.name,
+      brands: data.brands,
+      total: data.total,
+      description: data.description,
+      totalPurchases: data.totalPurchases,
+      details: data.details,
+      discount_percent: data.discount_percent,
+      inventory: data.inventory,
+      product_category: data.product_category,
+      product_brand: data.product_brand,
+      product_content: data.product_content,
+    });
 
-      return res.json({
-        message: "Thêm mới laptop thành công.",
-        data: postProduct,
-      });
+    return res.json({
+      message: "Thêm mới laptop thành công.",
+      data: postProduct,
     });
   } catch (err) {
     res.status(500).json({

@@ -11,6 +11,7 @@ const {
   selectProductPrice,
 } = require("../../controller/Product");
 const { checkProduct } = require("../../middleware/checkProduct");
+const uploadMiddleware = require("../../middleware/uploadImage");
 const routerProduct = express.Router();
 
 routerProduct.get("/", getProduct);

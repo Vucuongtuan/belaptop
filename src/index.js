@@ -17,6 +17,7 @@ const routerKeybourdType = require("./service/apiKeybourdType");
 const routerPost = require("./service/apiPostContent");
 const routerCart = require("./service/apiCart");
 const routerAdmin = require("./service/apiAdmin");
+const routerUpload = require("./service/apiUploadImage");
 
 app.use(cors());
 app.set("views", path.join(__dirname, "views"));
@@ -87,6 +88,7 @@ app.use("/product/keyboard/", routerKeybourd);
 app.use("/post-content/", routerPost);
 app.use("/cart/", routerCart);
 app.use("/admin/", routerAdmin);
+app.use("/upload/", routerUpload);
 //run server
 const port = 4000;
 app.listen(port, function () {
