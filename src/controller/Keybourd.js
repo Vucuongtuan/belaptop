@@ -77,80 +77,74 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage }).array("thumbnail", 7);
 const postKeybourd = async (req, res, next) => {
   try {
-    upload(req, res, async function (err) {
-      if (err) {
-        return res.status(500).json({
-          message: "Lỗi khi upload hình ảnh",
-          error: err,
-        });
-      }
+    const reqFile = req.files;
 
-      const {
-        name,
-        layout,
-        brands,
-        description,
-        totalPurchases,
-        switch_key,
-        pin,
-        personal,
-        foam,
-        weight,
-        size,
-        connector,
-        configuration,
-        keycap,
-        support,
-        accessory,
-        software,
-        compatibility,
-        product_type_keybourd,
-        product_content,
-        product_brand,
-        discount_percent,
-        inventory,
-      } = req.body;
-
-      const thumbnails = req.files.map((file) => ({
-        type: file.mimetype,
-        path: `https://vtc-be-laptop.onrender.com/assets/images/keyboard/${file.filename}`,
-      }));
-
-      const postData = await Keybourd.create({
-        name,
-        brands,
-        thumbnail: thumbnails,
-        layout,
-        description,
-        totalPurchases,
-        switch_key,
-        pin,
-        personal,
-        foam,
-        weight,
-        size,
-        connector,
-        configuration,
-        keycap,
-        support,
-        accessory,
-        software,
-        compatibility,
-        product_type_keybourd,
-        product_content,
-        product_brand,
-        discount_percent,
-        inventory,
-      });
-
-      if (!postData) {
-        return res
-          .status(500)
-          .json({ message: "Thêm thất bại, tên name đã tồn tại" });
-      }
-
-      return res.json({ message: "Thêm mới thành công", data: postData });
+    const thumbnail = reqFile.map((item) => {
+      const parts = item.originalname.split(".");
+      const ext = parts[parts.length - 1];
+      fs.renameSync(item.path, item.path + "." + ext);
+      return process.env.BASE_URL + "/image/" + item.filename + "." + ext;
     });
+    const {
+      name,
+      layout,
+      brands,
+      description,
+      totalPurchases,
+      switch_key,
+      pin,
+      personal,
+      foam,
+      weight,
+      size,
+      connector,
+      configuration,
+      keycap,
+      support,
+      accessory,
+      software,
+      compatibility,
+      product_type_keybourd,
+      product_content,
+      product_brand,
+      discount_percent,
+      inventory,
+    } = req.body;
+
+    const postData = await Keybourd.create({
+      name,
+      brands,
+      thumbnail: thumbnail,
+      layout,
+      description,
+      totalPurchases,
+      switch_key,
+      pin,
+      personal,
+      foam,
+      weight,
+      size,
+      connector,
+      configuration,
+      keycap,
+      support,
+      accessory,
+      software,
+      compatibility,
+      product_type_keybourd,
+      product_content,
+      product_brand,
+      discount_percent,
+      inventory,
+    });
+
+    if (!postData) {
+      return res
+        .status(500)
+        .json({ message: "Thêm thất bại, tên name đã tồn tại" });
+    }
+
+    return res.json({ message: "Thêm mới thành công", data: postData });
   } catch (err) {
     return res
       .status(500)

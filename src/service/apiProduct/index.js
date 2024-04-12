@@ -13,12 +13,14 @@ const {
 const { checkProduct } = require("../../middleware/checkProduct");
 const uploadMiddleware = require("../../middleware/uploadImage");
 const routerProduct = express.Router();
+const multer = require("multer");
+const upload = multer({ dest: "src/assets/image" });
 
 routerProduct.get("/", getProduct);
 routerProduct.get("/brand", getProductToBrand);
 routerProduct.get("/query", getByIdProduct);
 routerProduct.get("/trend", getProductTrend);
-routerProduct.post("/", postProduct);
+routerProduct.post("/", upload.array("thumbnail"), postProduct);
 routerProduct.put("/", updateProduct);
 routerProduct.delete("/", deleteProduct);
 routerProduct.delete("/search", searchProduct);

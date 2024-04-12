@@ -77,47 +77,37 @@ const getDataById = async () => {
 };
 const postDataMouse = async (req, res, next) => {
   try {
-    upload.array("images")(req, res, async function (err) {
-      if (err) {
-        console.error("Error uploading images:", err.message);
-        return res.status(500).send("Internal Server Error");
-      }
-      const {
-        name,
-        total,
-        guarantee,
-        details,
-        description,
-        totalPurchases,
-        brands,
-      } = req.body;
-      const imagePaths = req.files
-        ? req.files.map((file) => ({
-            url: file.path.replace("assets", ""),
-            isThumbnail: false,
-          }))
-        : [];
+    const reqFile = req.files;
 
-      const thumbnailIndex = req.body.thumbnailIndex;
-      if (thumbnailIndex !== undefined && thumbnailIndex < imagePaths.length) {
-        imagePaths[thumbnailIndex].isThumbnail = true;
-      }
-
-      const postData = await Mouse.create({
-        name,
-        total,
-        guarantee,
-        details,
-        description,
-        totalPurchases,
-        brands,
-        discount_percent,
-        inventory,
-        thumbnail: imagePaths,
-      });
-
-      return res.json(postData);
+    const thumbnail = reqFile.map((item) => {
+      const parts = item.originalname.split(".");
+      const ext = parts[parts.length - 1];
+      fs.renameSync(item.path, item.path + "." + ext);
+      return process.env.BASE_URL + "/image/" + item.filename + "." + ext;
     });
+    const {
+      name,
+      total,
+      guarantee,
+      details,
+      description,
+      totalPurchases,
+      brands,
+    } = req.body;
+    const postData = await Mouse.create({
+      name,
+      total,
+      guarantee,
+      details,
+      description,
+      totalPurchases,
+      brands,
+      discount_percent,
+      inventory,
+      thumbnail: thumbnail,
+    });
+
+    return res.json(postData);
   } catch (err) {
     return res.status(500).json({
       message: "Lỗi kết nối vui lòng thử lại sau",

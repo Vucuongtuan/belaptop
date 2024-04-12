@@ -107,7 +107,7 @@ const ProductLaptopSchema = new Schema(
     product_content: {
       type: Schema.Types.ObjectId,
       ref: "post_content",
-      required: true,
+      required: false,
     },
     create_product: { type: Date, default: Date.now },
     update_product: { type: Date, default: Date.now },
@@ -189,6 +189,7 @@ const BannerQcSchema = new Schema(
   {
     thumbnail: String,
     description: String,
+    id: String,
   },
   { collection: "banner-qc" }
 );

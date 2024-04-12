@@ -54,32 +54,27 @@ const getBannerQcLimit = async (req, res, next) => {
 
 const postBannerQc = async (req, res, next) => {
   try {
-    upload(req, res, async function (err) {
-      if (err) {
-        return res.status(500).json({
-          message: "Lỗi khi tải lên hình ảnh.",
-          error: err,
-        });
-      }
-
-      const { description } = req.body;
-      const thumbnail = req.file.filename;
-
-      if (!thumbnail) {
-        return res.status(400).json({
-          message: "Thiếu hình ảnh.",
-        });
-      }
-
-      const createData = await BannerQc.create({
-        thumbnail: process.env.BASE_URL + "/image/banner/" + thumbnail,
-        description,
+    const { description, id } = req.body;
+    const { filename, originalname, path } = req.file;
+    const parts = originalname.split(".");
+    const ext = parts[parts.length - 1];
+    fs.renameSync(path, path + "." + ext);
+    if (!filename) {
+      return res.status(400).json({
+        message: "Thiếu hình ảnh.",
       });
+    }
 
-      return res.json({
-        message: "Thêm mới banner thành công.",
-        data: createData,
-      });
+    const createData = await BannerQc.create({
+      id: id,
+      thumbnail: process.env.BASE_URL + "/image/" + filename + ".webp",
+      description,
+    });
+
+    return res.json({
+      message: "Thêm mới banner thành công.",
+      data: createData,
+      thumbnail: req.file,
     });
   } catch (err) {
     res.status(500).json({

@@ -31,6 +31,7 @@ app.get("/", (req, res) => {
 });
 
 //static file image
+app.use("/image", express.static(path.join(__dirname, "./assets/image")));
 app.use(
   "/image/banner",
   express.static(path.join(__dirname, "./assets/image/banner"))

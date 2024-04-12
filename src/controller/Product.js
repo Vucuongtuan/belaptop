@@ -1,6 +1,7 @@
 const multer = require("multer");
 const { ProductLaptop } = require("../models/");
 const path = require("path");
+const fs = require("fs");
 const LIMIT = 10;
 const getProduct = async (req, res, next) => {
   try {
@@ -105,21 +106,22 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage }).array("thumbnail", 7);
 const postProduct = async (req, res, next) => {
   try {
-    console.log("====================================");
-    console.log(req.body);
-    console.log("====================================");
-    const { data } = req.body;
-    let modifiedThumbnail = data.thumbnail.map(
-      (item) => process.env.BASE_URL + "/" + item
-    );
-    console.log(data);
+    const data = req.body;
+    const reqFile = req.files;
+
+    const thumbnail = reqFile.map((item) => {
+      const parts = item.originalname.split(".");
+      const ext = parts[parts.length - 1];
+      fs.renameSync(item.path, item.path + "." + ext);
+      return process.env.BASE_URL + "/image/" + item.filename + "." + ext;
+    });
 
     const postProduct = await ProductLaptop.create({
-      thumbnail: modifiedThumbnail,
       name: data.name,
-      brands: data.brands,
       total: data.total,
       description: data.description,
+      brands: data.brands,
+      thumbnail: thumbnail,
       totalPurchases: data.totalPurchases,
       details: data.details,
       discount_percent: data.discount_percent,
@@ -134,12 +136,16 @@ const postProduct = async (req, res, next) => {
       data: postProduct,
     });
   } catch (err) {
+    console.log("====================================");
+    console.log(err);
+    console.log("====================================");
     res.status(500).json({
       message: "Lỗi kết nối đến server !!!",
       error: err,
     });
   }
 };
+
 // const postProduct = async (req, res, next) => {
 //   try {
 //     const data = req.body.data;
