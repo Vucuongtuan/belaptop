@@ -9,7 +9,6 @@ const storage = multer.diskStorage({
     cb(null, "product" + "-" + file.originalname);
   },
 });
-
 const upload = multer({ storage: storage });
 
 module.exports = upload;

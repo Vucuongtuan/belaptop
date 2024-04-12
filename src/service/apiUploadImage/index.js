@@ -9,7 +9,7 @@ routerUpload.post("/", upload.array("image"), (req, res) => {
       uploadedImages.push(file.path);
     });
 
-    res.json({ images: uploadedImages });
+    res.json(uploadedImages);
   } catch (err) {
     console.log(err);
     res.status(500).json({ error: "Server error" });

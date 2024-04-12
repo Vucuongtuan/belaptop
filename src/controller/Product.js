@@ -109,11 +109,13 @@ const postProduct = async (req, res, next) => {
     console.log(req.body);
     console.log("====================================");
     const { data } = req.body;
-
+    let modifiedThumbnail = data.thumbnail.map(
+      (item) => process.env.BASE_URL + "/" + item
+    );
     console.log(data);
 
     const postProduct = await ProductLaptop.create({
-      thumbnail: data.thumbnail,
+      thumbnail: modifiedThumbnail,
       name: data.name,
       brands: data.brands,
       total: data.total,
