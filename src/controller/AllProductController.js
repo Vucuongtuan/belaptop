@@ -32,7 +32,7 @@ const getAllProduct = async (req, res, next) => {
 
     const responseData = {
       total: filteredData.length,
-      totalPages: Math.ceil(filteredData.length / PAGE_SIZE),
+      totalPage: Math.ceil(filteredData.length / PAGE_SIZE),
       data: newData,
     };
 
