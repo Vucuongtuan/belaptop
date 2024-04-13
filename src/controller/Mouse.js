@@ -78,7 +78,6 @@ const getDataById = async () => {
 const postDataMouse = async (req, res, next) => {
   try {
     const reqFile = req.files;
-
     const thumbnail = reqFile.map((item) => {
       const parts = item.originalname.split(".");
       const ext = parts[parts.length - 1];

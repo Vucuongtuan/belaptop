@@ -108,33 +108,40 @@ const postProduct = async (req, res, next) => {
   try {
     const data = req.body;
     const reqFile = req.files;
-
     const thumbnail = reqFile.map((item) => {
       const parts = item.originalname.split(".");
       const ext = parts[parts.length - 1];
       fs.renameSync(item.path, item.path + "." + ext);
       return process.env.BASE_URL + "/image/" + item.filename + "." + ext;
     });
-
-    const postProduct = await ProductLaptop.create({
-      name: data.name,
-      total: data.total,
-      description: data.description,
-      brands: data.brands,
-      thumbnail: thumbnail,
-      totalPurchases: data.totalPurchases,
-      details: data.details,
-      discount_percent: data.discount_percent,
-      inventory: data.inventory,
-      product_category: data.product_category,
-      product_brand: data.product_brand,
-      product_content: data.product_content,
-    });
-
-    return res.json({
-      message: "Thêm mới laptop thành công.",
-      data: postProduct,
-    });
+    // const detailsJSON = JSON.stringify(data.details);
+    // const detailsJSONParse = JSON.parse(data.details);
+    const get = await ProductLaptop.findOne({ name: data.name });
+    if (get.length === 0) {
+      const postProduct = await ProductLaptop.create({
+        name: data.name,
+        total: data.total,
+        description: data.description,
+        brands: data.brands,
+        thumbnail: thumbnail,
+        totalPurchases: data.totalPurchases,
+        details: JSON.parse(data.details),
+        discount_percent: data.discount_percent,
+        inventory: data.inventory,
+        product_category: data.product_category,
+        product_brand: data.product_brand,
+        // product_content: data.product_content,
+      });
+      return res.json({
+        message: "Thêm mới laptop thành công.",
+        data: postProduct,
+      });
+    } else {
+      return res.json({
+        message: "Đã có tên sp này",
+        data: data.name,
+      });
+    }
   } catch (err) {
     console.log("====================================");
     console.log(err);
