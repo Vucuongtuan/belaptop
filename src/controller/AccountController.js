@@ -1,3 +1,4 @@
+const { request } = require("express");
 const { User, Cart, OTP } = require("../models");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
@@ -234,9 +235,10 @@ const loginAccountApp = async (req, res) => {
     const token = jwt.sign(
       { email: emailCheck.email, userId: emailCheck._id },
       process.env.PASS_JWT,
-      { expiresIn: "1h" }
+      { expiresIn: "5s" }
     );
-
+    req.session.userTokens = req.session.userTokens || [];
+    req.session.userTokens.push(token);
     res.status(200).json({
       token,
       username: emailCheck.name,

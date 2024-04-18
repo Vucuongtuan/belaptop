@@ -161,7 +161,7 @@ const MouseSchema = new Schema(
       max_acceleration: String,
       max_speed: String,
       size: String,
-      weight: Number,
+      weight: String,
     },
     discount_percent: Number,
     inventory: Number,

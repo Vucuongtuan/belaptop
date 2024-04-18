@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const db = require("./config");
+const session = require("express-session");
 const accountAPI = require("./service/apiAccount/");
 const routerProductType = require("./service/apiProductType/");
 const bodyParser = require("body-parser");
@@ -18,7 +19,25 @@ const routerPost = require("./service/apiPostContent");
 const routerCart = require("./service/apiCart");
 const routerAdmin = require("./service/apiAdmin");
 const routerUpload = require("./service/apiUploadImage");
-
+const cookieParser = require("cookie-parser");
+//setup session cookies
+app.use(cookieParser());
+app.use(
+  session({
+    secret: "mySecretKey",
+    resave: true,
+    saveUninitialized: false,
+    cookie: {
+      maxAge: 3600000,
+      httpOnly: true,
+    },
+  })
+);
+app.get("/token", (req, res) => {
+  res.json({
+    token: req.session.userTokens,
+  });
+});
 app.use(cors());
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");

@@ -1,6 +1,6 @@
 const multer = require("multer");
 const { Mouse } = require("../models/");
-
+const fs = require("fs");
 const LIMIT = 10;
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -84,30 +84,44 @@ const postDataMouse = async (req, res, next) => {
       fs.renameSync(item.path, item.path + "." + ext);
       return process.env.BASE_URL + "/image/" + item.filename + "." + ext;
     });
+
     const {
       name,
       total,
       guarantee,
       details,
       description,
-      totalPurchases,
-      brands,
-    } = req.body;
-    const postData = await Mouse.create({
-      name,
-      total,
-      guarantee,
-      details,
-      description,
-      totalPurchases,
-      brands,
       discount_percent,
       inventory,
-      thumbnail: thumbnail,
-    });
-
-    return res.json(postData);
+      brands,
+      product_brand,
+      product_category,
+    } = req.body;
+    const get = await Mouse.find({ name: name });
+    if (get.length === 0) {
+      const postData = await Mouse.create({
+        name,
+        total,
+        guarantee,
+        details: JSON.parse(details),
+        description,
+        brands,
+        discount_percent,
+        inventory,
+        thumbnail: thumbnail,
+        product_brand,
+        product_type__mouse: product_category,
+      });
+      return res.json(postData);
+    } else {
+      return res.json({
+        message: "Đã có sản phẩm này rồi",
+      });
+    }
   } catch (err) {
+    console.log("====================================");
+    console.log(err);
+    console.log("====================================");
     return res.status(500).json({
       message: "Lỗi kết nối vui lòng thử lại sau",
     });

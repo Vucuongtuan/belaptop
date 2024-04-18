@@ -23,6 +23,6 @@ accountAPI.post("/", verifyOTP, postDataAccountUser);
 accountAPI.put("/update_id", putDataAccountUser);
 accountAPI.delete("/delete_id", deleteAccountUser);
 
-accountAPI.post("/signin", loginAccountApp);
+accountAPI.post("/login", loginAccountApp);
 
 module.exports = accountAPI;
