@@ -108,7 +108,7 @@ const postKeybourd = async (req, res, next) => {
       product_content,
       product_brand,
       discount_percent,
-      inventory,
+      inventory,product_category
     } = req.body;
 
     const postData = await Keybourd.create({
@@ -135,7 +135,7 @@ const postKeybourd = async (req, res, next) => {
       product_content,
       product_brand,
       discount_percent,
-      inventory,
+      inventory,product_category
     });
 
     if (!postData) {
