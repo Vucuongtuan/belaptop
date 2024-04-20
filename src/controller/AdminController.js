@@ -89,9 +89,8 @@ const loginAdmin = async (req, res) => {
           "Vui lòng kiểm tra lại thông tin tài khoản hoặc thử lại sau",
       });
     }
-    const currentTime = new Date().getTime();
     const oneWeekInMilliseconds = 7 * 24 * 60 * 60 * 1000;
-    const expirationTime = currentTime + oneWeekInMilliseconds;
+
     const token = jwt.sign(
       { email: check.email, Id: check._id },
       process.env.PASS_JWT,
@@ -99,7 +98,7 @@ const loginAdmin = async (req, res) => {
     );
     res.cookie("token", token, {
       httpOnly: true,
-      maxAge: 3600000,
+      maxAge: oneWeekInMilliseconds,
       secure: true,
     });
     return res.status(200).json({
@@ -107,7 +106,7 @@ const loginAdmin = async (req, res) => {
       username: check.name,
       email: check.email,
       adminId: check._id,
-      expiresIn: 3600,
+      expiresIn: oneWeekInMilliseconds,
       message: "Đăng nhập thành công",
     });
   } catch (err) {
