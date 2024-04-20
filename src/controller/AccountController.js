@@ -232,10 +232,11 @@ const loginAccountApp = async (req, res) => {
         message: "Mật khẩu không đúng.",
       });
     }
+    const oneWeekInMilliseconds = 7 * 24 * 60 * 60 * 1000;
     const token = jwt.sign(
       { email: emailCheck.email, userId: emailCheck._id },
       process.env.PASS_JWT,
-      { expiresIn: "5s" }
+      { expiresIn: oneWeekInMilliseconds }
     );
     req.session.userTokens = req.session.userTokens || [];
     req.session.userTokens.push(token);
@@ -244,7 +245,7 @@ const loginAccountApp = async (req, res) => {
       username: emailCheck.name,
       email: emailCheck.email,
       userId: emailCheck._id,
-      expiresIn: 3600,
+      expiresIn: oneWeekInMilliseconds,
     });
   } catch {
     return res.status(500).json({
