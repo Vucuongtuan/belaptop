@@ -20,6 +20,7 @@ const routerCart = require("./service/apiCart");
 const routerAdmin = require("./service/apiAdmin");
 const routerUpload = require("./service/apiUploadImage");
 const cookieParser = require("cookie-parser");
+const routerToken = require("./service/apiCheckToken");
 //setup session cookies
 app.use(cookieParser());
 app.use(
@@ -109,6 +110,7 @@ app.use("/post-content/", routerPost);
 app.use("/cart/", routerCart);
 app.use("/admin/", routerAdmin);
 app.use("/upload/", routerUpload);
+app.use("/token/", routerToken);
 //run server
 const port = 4000;
 app.listen(port, function () {
