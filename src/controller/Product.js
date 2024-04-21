@@ -117,7 +117,8 @@ const postProduct = async (req, res, next) => {
     // const detailsJSON = JSON.stringify(data.details);
     // const detailsJSONParse = JSON.parse(data.details);
     const get = await ProductLaptop.findOne({ name: data.name });
-    if (get.length === 0) {
+
+    if (get === null) {
       const postProduct = await ProductLaptop.create({
         name: data.name,
         total: data.total,

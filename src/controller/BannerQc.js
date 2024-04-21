@@ -124,8 +124,8 @@ const updateBannerQc = async (req, res, next) => {
 };
 const deleteBannerQc = async (req, res, next) => {
   try {
-    const { id } = req.params;
-    let deleteBanner = await BannerQc.findByIdAndDelete({ id });
+    const { id } = req.query;
+    let deleteBanner = await BannerQc.findByIdAndDelete({ _id: id });
 
     if (deleteBanner.length === 0) {
       res.json({
@@ -134,6 +134,9 @@ const deleteBannerQc = async (req, res, next) => {
     }
     res.json({ message: "Xóa banner thành công", data: deleteBanner });
   } catch (err) {
+    console.log("====================================");
+    console.log(err);
+    console.log("====================================");
     res.status(500).json({
       message: "Lỗi kết nối đến server !!!",
       err: err,
