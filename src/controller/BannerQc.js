@@ -124,7 +124,7 @@ const updateBannerQc = async (req, res, next) => {
 };
 const deleteBannerQc = async (req, res, next) => {
   try {
-    const { id } = req.body;
+    const { id } = req.params;
     let getData = await BannerQc.findByIdAndDelete({ id });
 
     if (getData.length === 0) {
