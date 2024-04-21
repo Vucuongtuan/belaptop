@@ -124,14 +124,15 @@ const updateBannerQc = async (req, res, next) => {
 };
 const deleteBannerQc = async (req, res, next) => {
   try {
-    let getData = await BannerQc.find({});
+    const { id } = req.body;
+    let getData = await BannerQc.findByIdAndDelete({ id });
 
     if (getData.length === 0) {
       res.json({
-        message: "Không có dữ liệu nào ",
+        message: "Dữ liệu không tồn tại",
       });
     }
-    res.json(getData);
+    res.json({ message: "Xóa banner thành công", data: getData });
   } catch (err) {
     res.status(500).json({
       message: "Lỗi kết nối đến server !!!",
