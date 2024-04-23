@@ -17,11 +17,6 @@ const UserSchema = new Schema(
 
 const CartSchema = new Schema(
   {
-    // userID: {
-    //   type: Schema.Types.ObjectId,
-    //   ref: "User",
-    //   required: true,
-    // },
     name: String,
     email: String,
     phone: Number,
@@ -323,7 +318,23 @@ const RevenueSchema = new Schema(
   },
   { collection: "revenue" }
 );
-
+const BlogSchema = new Schema({
+  title: String,
+  body: String,
+  thumbnail: String,
+  description: String,
+  author: String,
+  idAuthor: {
+    type: Schema.Types.ObjectId,
+    required: true,
+  },
+  idProduct: {
+    type: Schema.Types.ObjectId,
+    required: false,
+  },
+  date_create: { type: Date, default: Date.now },
+});
+const Blog = mongoose.model("blog", BlogSchema);
 const OTP = mongoose.model("Otp", otpSchema);
 const User = mongoose.model("User", UserSchema);
 const Brands = mongoose.model("brands", BrandsSchema);
@@ -359,4 +370,5 @@ module.exports = {
   Revenue,
   OTP,
   Admin,
+  Blog,
 };

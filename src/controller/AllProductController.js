@@ -57,7 +57,7 @@ const getRevenue = async (req, res) => {
     const allData = [...getDataLaptop, ...getDataMouse, ...getDataKeyboard];
     let totalRevenue = 0;
     const products = allData.map((product) => {
-      const revenue = product.total * product.totalPurchases;
+      const revenue = product.total * product.totalPurchases || 0;
       totalRevenue += revenue;
 
       return {

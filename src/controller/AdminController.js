@@ -96,6 +96,11 @@ const loginAdmin = async (req, res) => {
       process.env.PASS_JWT,
       { expiresIn: oneWeekInMilliseconds }
     );
+
+    req.session.adminOnline = {
+      id: check._id,
+      name: check.name,
+    };
     res.cookie("token", token, {
       httpOnly: true,
       maxAge: oneWeekInMilliseconds,
@@ -114,4 +119,29 @@ const loginAdmin = async (req, res) => {
     res.status(500).json({ message: "Lỗi vui lòng thử lại sau" });
   }
 };
-module.exports = { getAdmin, postAdmin, deleteAdmin, getbyIDAdmin, loginAdmin };
+const getonLineAdmin = async (req, res, next) => {
+  try {
+    console.log("====================================");
+    console.log(req.session);
+    console.log("====================================");
+    if (req.session) {
+      const adminOnline = req.session.adminOnline || [];
+      res.json(adminOnline);
+    } else {
+      res.status(401).json({ message: "Không tìm thấy session" });
+    }
+  } catch (err) {
+    console.log("====================================");
+    console.log(err);
+    console.log("====================================");
+    res.status(500).json({ message: "Kết nối thất bại vui lòng thử lại sau" });
+  }
+};
+module.exports = {
+  getAdmin,
+  postAdmin,
+  deleteAdmin,
+  getbyIDAdmin,
+  loginAdmin,
+  getonLineAdmin,
+};

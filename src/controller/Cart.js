@@ -38,7 +38,7 @@
 
 // module.exports = { addToCart, viewCart };
 // controllers/cartController.js
-const { User, Cart } = require("../models");
+const { User, Cart, ProductLaptop, Keybourd, Mouse } = require("../models");
 
 const addToCart = async (req, res) => {
   try {
@@ -46,9 +46,6 @@ const addToCart = async (req, res) => {
       req.body;
     const idUser = await User.findOne({ _id: userId });
 
-    console.log("====================================");
-    console.log(idUser);
-    console.log("====================================");
     const idCart = idUser.cartID;
     const insertDataCart = await Cart.findByIdAndUpdate(
       idCart,
@@ -62,6 +59,41 @@ const addToCart = async (req, res) => {
       },
       { new: true }
     );
+    for (const productId of listProduct) {
+      const search = await Promise.all([
+        ProductLaptop.findById(productId._id),
+        Mouse.findById(productId._id),
+        Keybourd.findById(productId._id),
+      ]);
+      if (search[0] !== null) {
+        const convertNumber = parseInt(search[0].totalPurchases);
+        const updateNumber = convertNumber + 1;
+        const string = updateNumber.toString();
+
+        await ProductLaptop.findByIdAndUpdate(productId._id, {
+          $set: { totalPurchases: string },
+          $inc: { inventory: -1 },
+        });
+      } else if (search[1] !== null) {
+        const convertNumber = parseInt(search[1].totalPurchases);
+        const updateNumber = convertNumber + 1;
+        const string = updateNumber.toString();
+
+        await Mouse.findByIdAndUpdate(productId._id, {
+          $set: { totalPurchases: string },
+          $inc: { inventory: -1 },
+        });
+      } else if (search[2] !== null) {
+        const convertNumber = parseInt(search[2].totalPurchases);
+        const updateNumber = convertNumber + 1;
+        const string = updateNumber.toString();
+
+        await Keybourd.findByIdAndUpdate(productId._id, {
+          $set: { totalPurchases: string },
+          $inc: { inventory: -1 },
+        });
+      }
+    }
     return res.json({
       message: "Mua hàng thành công",
       data: insertDataCart,

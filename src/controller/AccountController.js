@@ -3,6 +3,8 @@ const { User, Cart, OTP } = require("../models");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 const otpGenerator = require("otp-generator");
+const bcrypt = require("bcryptjs");
+const salt = bcrypt.genSaltSync(10);
 const getDataAccountUser = async (req, res, next) => {
   try {
     await User.find({})
@@ -141,7 +143,7 @@ const postDataAccountUser = async (req, res, next) => {
       name,
       address,
       email,
-      password,
+      password: bcrygt.hashSync(password, salt),
       phone,
       cartID: cart._id,
     });

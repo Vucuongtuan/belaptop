@@ -1,6 +1,7 @@
 const { Keybourd } = require("../models/");
 const multer = require("multer");
 const path = require("path");
+const fs = require("fs");
 const messageError = (err) => {
   return res.status(500).json({
     message: "Kết nối thất bai !!!",
@@ -89,6 +90,7 @@ const postKeybourd = async (req, res, next) => {
       name,
       layout,
       brands,
+      total,
       description,
       totalPurchases,
       switch_key,
@@ -114,6 +116,7 @@ const postKeybourd = async (req, res, next) => {
     const postData = await Keybourd.create({
       name,
       brands,
+      total,
       thumbnail: thumbnail,
       layout,
       description,

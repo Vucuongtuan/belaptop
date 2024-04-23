@@ -21,6 +21,7 @@ const routerAdmin = require("./service/apiAdmin");
 const routerUpload = require("./service/apiUploadImage");
 const cookieParser = require("cookie-parser");
 const routerToken = require("./service/apiCheckToken");
+const routerBlog = require("./service/apiBlog");
 //setup session cookies
 app.use(cookieParser());
 app.use(
@@ -42,6 +43,9 @@ app.get("/token", (req, res) => {
 app.use(cors());
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
+app.get("/post", (req, res) => {
+  res.render("post");
+});
 app.get("/", (req, res) => {
   const data = {
     pageTitle: "Trang chủ",
@@ -111,6 +115,7 @@ app.use("/cart/", routerCart);
 app.use("/admin/", routerAdmin);
 app.use("/upload/", routerUpload);
 app.use("/token/", routerToken);
+app.use("/blog/", routerBlog);
 //run server
 const port = 4000;
 app.listen(port, function () {
