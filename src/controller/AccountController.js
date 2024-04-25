@@ -240,6 +240,7 @@ const loginAccountApp = async (req, res) => {
       process.env.PASS_JWT,
       { expiresIn: oneWeekInMilliseconds }
     );
+
     res.cookie("token", token, { maxAge: oneWeekInMilliseconds });
     req.session.userTokens = req.session.userTokens || [];
     req.session.userTokens.push(token);

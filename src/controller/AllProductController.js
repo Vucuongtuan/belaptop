@@ -110,4 +110,25 @@ const getIdSiteMap = async (req, res) => {
     });
   }
 };
-module.exports = { getAllProduct, getIdSiteMap, getRevenue };
+const getProductByName = async (req, res) => {
+  try {
+    const name = req.body.name;
+
+    const [getDataLaptop, getDataMouse, getDataKeyboard] = await Promise.all([
+      ProductLaptop.find({ name: { $regex: new RegExp(name, "i") } }),
+      Mouse.find({ name: { $regex: new RegExp(name, "i") } }),
+      Keybourd.find({ name: { $regex: new RegExp(name, "i") } }),
+    ]);
+    const allData = [...getDataLaptop, ...getDataMouse, ...getDataKeyboard];
+    const searchQuery = allData.filter((data) => data.name === name);
+
+    res.json(allData);
+  } catch (err) {
+    console.log("====================================");
+    console.log(err);
+    console.log("====================================");
+
+    res.status(500).json({ message: "Lỗi hệ thống vui lòng thử lại sau" });
+  }
+};
+module.exports = { getAllProduct, getIdSiteMap, getRevenue, getProductByName };

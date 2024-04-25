@@ -2,6 +2,7 @@ const { Keybourd } = require("../models/");
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
+const { createComment } = require("./likeAndComment");
 const messageError = (err) => {
   return res.status(500).json({
     message: "Kết nối thất bai !!!",
@@ -147,6 +148,7 @@ const postKeybourd = async (req, res, next) => {
         .json({ message: "Thêm thất bại, tên name đã tồn tại" });
     }
 
+    await createComment(postData._id);
     return res.json({ message: "Thêm mới thành công", data: postData });
   } catch (err) {
     return res

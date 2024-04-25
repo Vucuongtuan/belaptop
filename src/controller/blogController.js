@@ -1,17 +1,43 @@
 const { Blog } = require("../models");
 const fs = require("fs");
+const { getAllProduct } = require("./AllProductController");
 const getAllBlog = async (req, res, next) => {
   try {
     const page = req.query.page || 1;
     const data = await Blog.find()
       .skip((page - 1) * process.env.LIMIT)
       .limit(process.env.LIMIT);
-
+    const totalPages = Math.ceil(data.length / process.env.LIMIT);
     if (data.length === 0) {
       res.status(404).json({ message: "Không có bài blog nào" });
       return;
     }
-    res.json(data);
+    res.json({
+      total: data.length,
+      totalPage: totalPages,
+      data: data,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      message: "Lỗi xử lý vui lòng thử lại sau",
+    });
+  }
+};
+const getBlogByIdProduct = async (req, res) => {
+  try {
+    const { idProduct } = req.body;
+    const blog = await Blog.findOne({
+      idProduct: idProduct,
+    });
+    if (blog === null) {
+      res.status(404).json({
+        message: "Không có bài viết nào ",
+      });
+      return;
+    }
+
+    res.json(blog);
   } catch (err) {
     console.log(err);
     res.status(500).json({
@@ -56,6 +82,7 @@ const getBlogByName = async (req, res, next) => {
 const createBlog = async (req, res, next) => {
   try {
     const reqFile = req.file;
+
     const parts = reqFile.originalname.split(".");
     const ext = parts[parts.length - 1];
     fs.renameSync(reqFile.path, reqFile.path + "." + ext);
@@ -74,8 +101,8 @@ const createBlog = async (req, res, next) => {
         process.env.BASE_URL + "/image/" + reqFile.filename + "." + ext,
       author,
       idAuthor,
-      date_create: Date.now(),
       idProduct,
+      date_create: Date.now(),
     });
     console.log(post);
   } catch (err) {
@@ -86,4 +113,11 @@ const createBlog = async (req, res, next) => {
   }
 };
 
-module.exports = { getAllBlog, getBlogById, createBlog, getBlogByName };
+module.exports = {
+  getAllBlog,
+  getBlogById,
+  createBlog,
+  getBlogByName,
+  getBlogByIdProduct,
+  getBlogByIdProduct,
+};

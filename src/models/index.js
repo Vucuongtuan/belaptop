@@ -334,6 +334,35 @@ const BlogSchema = new Schema({
   },
   date_create: { type: Date, default: Date.now },
 });
+const LikeAndCommentSchema = new Schema({
+  productId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Product",
+  },
+  comments: [
+    {
+      userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+      name: String,
+      comment: String,
+    },
+  ],
+
+  likes: {
+    type: Number,
+    default: 0,
+  },
+  dislikes: {
+    type: Number,
+    default: 0,
+  },
+});
+const LikeAndComment = mongoose.model(
+  "LikeAndCommentSchema",
+  LikeAndCommentSchema
+);
 const Blog = mongoose.model("blog", BlogSchema);
 const OTP = mongoose.model("Otp", otpSchema);
 const User = mongoose.model("User", UserSchema);
@@ -371,4 +400,5 @@ module.exports = {
   OTP,
   Admin,
   Blog,
+  LikeAndComment,
 };

@@ -2,6 +2,7 @@ const multer = require("multer");
 const { ProductLaptop } = require("../models/");
 const path = require("path");
 const fs = require("fs");
+const { createComment } = require("./likeAndComment");
 const LIMIT = 10;
 const getProduct = async (req, res, next) => {
   try {
@@ -133,6 +134,7 @@ const postProduct = async (req, res, next) => {
         product_brand: data.product_brand,
         // product_content: data.product_content,
       });
+      await createComment(postProduct._id);
       return res.json({
         message: "Thêm mới laptop thành công.",
         data: postProduct,

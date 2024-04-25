@@ -1,6 +1,7 @@
 const multer = require("multer");
 const { Mouse } = require("../models/");
 const fs = require("fs");
+const { createComment } = require("./likeAndComment");
 const LIMIT = 10;
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -112,6 +113,7 @@ const postDataMouse = async (req, res, next) => {
         product_brand,
         product_type__mouse: product_category,
       });
+      await createComment(postData._id);
       return res.json(postData);
     } else {
       return res.json({

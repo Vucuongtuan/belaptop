@@ -22,6 +22,7 @@ const routerUpload = require("./service/apiUploadImage");
 const cookieParser = require("cookie-parser");
 const routerToken = require("./service/apiCheckToken");
 const routerBlog = require("./service/apiBlog");
+const routerComment = require("./service/apiComment");
 //setup session cookies
 app.use(cookieParser());
 app.use(
@@ -116,6 +117,7 @@ app.use("/admin/", routerAdmin);
 app.use("/upload/", routerUpload);
 app.use("/token/", routerToken);
 app.use("/blog/", routerBlog);
+app.use("/comment/", routerComment);
 //run server
 const port = 4000;
 app.listen(port, function () {
