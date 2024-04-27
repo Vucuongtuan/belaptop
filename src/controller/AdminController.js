@@ -1,4 +1,4 @@
-const { Admin } = require("../models");
+const { Admin, AdminOnline } = require("../models");
 const jwt = require("jsonwebtoken");
 const getAdmin = async (req, res, next) => {
   try {
@@ -96,16 +96,17 @@ const loginAdmin = async (req, res) => {
       process.env.PASS_JWT,
       { expiresIn: oneWeekInMilliseconds }
     );
-
-    req.session.adminOnline = {
+    const log = {
       id: check._id,
       name: check.name,
     };
+
     res.cookie("token", token, {
       httpOnly: true,
       maxAge: oneWeekInMilliseconds,
       secure: true,
     });
+    await AdminOnline.create({ idAdmin: check._id, name: check.name });
     return res.status(200).json({
       token,
       username: check.name,
@@ -121,15 +122,26 @@ const loginAdmin = async (req, res) => {
 };
 const getonLineAdmin = async (req, res, next) => {
   try {
-    console.log("====================================");
-    console.log(req.session);
-    console.log("====================================");
-    if (req.session) {
-      const adminOnline = req.session.adminOnline || [];
-      res.json(adminOnline);
-    } else {
-      res.status(401).json({ message: "Không tìm thấy session" });
+    const query = await AdminOnline.find({});
+    if (query.length === 0) {
+      res.status(404).json({ message: "Không có người nào " });
     }
+    res.json(query);
+  } catch (err) {
+    console.log("====================================");
+    console.log(err);
+    console.log("====================================");
+    res.status(500).json({ message: "Kết nối thất bại vui lòng thử lại sau" });
+  }
+};
+const logoutOnLineAdmin = async (req, res, next) => {
+  try {
+    const idAdmin = req.body;
+    const query = await AdminOnline.findOneAndDelete({ idAdmin: idAdmin });
+    if (query.length === 0) {
+      res.status(404).json({ message: "Không có người nào " });
+    }
+    res.json(query);
   } catch (err) {
     console.log("====================================");
     console.log(err);
@@ -144,4 +156,5 @@ module.exports = {
   getbyIDAdmin,
   loginAdmin,
   getonLineAdmin,
+  logoutOnLineAdmin,
 };

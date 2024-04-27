@@ -104,7 +104,7 @@ const createBlog = async (req, res, next) => {
       idProduct,
       date_create: Date.now(),
     });
-    console.log(post);
+    res.json(post);
   } catch (err) {
     console.log(err);
     res.status(500).json({

@@ -335,10 +335,7 @@ const BlogSchema = new Schema({
   date_create: { type: Date, default: Date.now },
 });
 const LikeAndCommentSchema = new Schema({
-  productId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Product",
-  },
+  idProduct: String,
   comments: [
     {
       userId: {
@@ -347,18 +344,37 @@ const LikeAndCommentSchema = new Schema({
       },
       name: String,
       comment: String,
+      rating: {
+        type: Number,
+        min: 1,
+        max: 5,
+      },
+      date_create: { type: Date, default: Date.now() },
+      likes: [
+        {
+          userId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+          },
+        },
+      ],
+      replies: [
+        {
+          userId: String,
+          name: String,
+          comment: String,
+          date_create: { type: Date, default: Date.now() },
+        },
+      ],
     },
   ],
-
-  likes: {
-    type: Number,
-    default: 0,
-  },
-  dislikes: {
-    type: Number,
-    default: 0,
-  },
 });
+const adminOnline = new Schema({
+  idAdmin: String,
+  name: String,
+  date_create: { type: Date, default: Date.now() },
+});
+const AdminOnline = mongoose.model("AdminOnline", adminOnline);
 const LikeAndComment = mongoose.model(
   "LikeAndCommentSchema",
   LikeAndCommentSchema
@@ -401,4 +417,5 @@ module.exports = {
   Admin,
   Blog,
   LikeAndComment,
+  AdminOnline,
 };
