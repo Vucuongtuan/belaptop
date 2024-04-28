@@ -1,5 +1,6 @@
 const { Admin, AdminOnline } = require("../models");
 const jwt = require("jsonwebtoken");
+const { updateEmployeeLoginStatus, onlineEmployees } = require("./Socket");
 const getAdmin = async (req, res, next) => {
   try {
     const data = await Admin.find();
@@ -10,6 +11,51 @@ const getAdmin = async (req, res, next) => {
       data: data,
     });
   } catch (err) {
+    res.status(500).json({ message: "Lỗi vui lòng thử lại sau" });
+  }
+};
+const getProfileByID = async (req, res) => {
+  try {
+    const id = req.query.id;
+    const get = await Admin.findById(id);
+    if (get === null) {
+      res.status(404).json({
+        message: "Không tìm thấy profile có id là " + id,
+      });
+    }
+
+    const birth = new Date(get.dateOfBirth);
+    const formattedDatebirth = birth.toLocaleDateString("en-VI", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    });
+    const create = new Date(get.create_date);
+    const formattedDatecreate = create.toLocaleDateString("en-VI", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    });
+    const update = new Date(get.update_date);
+    const formattedDateupdate = update.toLocaleDateString("en-VI", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    });
+    res.json({
+      _id: get._id,
+      email: get.email,
+      password: get.password,
+      phone: get.phone,
+      dateOfBirth: formattedDatebirth,
+      name: get.name,
+      gender: get.gender,
+      address: get.address,
+      create_date: formattedDatecreate,
+      update_date: formattedDateupdate,
+    });
+  } catch (err) {
+    console.log(err);
     res.status(500).json({ message: "Lỗi vui lòng thử lại sau" });
   }
 };
@@ -63,6 +109,7 @@ const getbyIDAdmin = async (req, res, next) => {
     if (data.length === 0) {
       res.status(404).json({ message: "Không tìm thấy nhân viên nào" });
     }
+
     res.json({
       data: data,
       message: "Lấy thông tin nhân viên thành công",
@@ -100,7 +147,7 @@ const loginAdmin = async (req, res) => {
       id: check._id,
       name: check.name,
     };
-
+    updateEmployeeLoginStatus(check._id, check.name);
     res.cookie("token", token, {
       httpOnly: true,
       maxAge: oneWeekInMilliseconds,
@@ -126,7 +173,8 @@ const getonLineAdmin = async (req, res, next) => {
     if (query.length === 0) {
       res.status(404).json({ message: "Không có người nào " });
     }
-    res.json(query);
+
+    res.json(Array.from(onlineEmployees));
   } catch (err) {
     console.log("====================================");
     console.log(err);
@@ -137,10 +185,11 @@ const getonLineAdmin = async (req, res, next) => {
 const logoutOnLineAdmin = async (req, res, next) => {
   try {
     const idAdmin = req.body;
-    const query = await AdminOnline.findOneAndDelete({ idAdmin: idAdmin });
+    const query = await AdminOnline.deleteOne({ idAdmin: idAdmin });
     if (query.length === 0) {
       res.status(404).json({ message: "Không có người nào " });
     }
+    updateEmployeeLogoutStatus();
     res.json(query);
   } catch (err) {
     console.log("====================================");
@@ -157,4 +206,5 @@ module.exports = {
   loginAdmin,
   getonLineAdmin,
   logoutOnLineAdmin,
+  getProfileByID,
 };
