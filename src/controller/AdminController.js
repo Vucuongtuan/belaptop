@@ -51,6 +51,7 @@ const getProfileByID = async (req, res) => {
       name: get.name,
       gender: get.gender,
       address: get.address,
+      position: get.position,
       create_date: formattedDatecreate,
       update_date: formattedDateupdate,
     });
@@ -147,7 +148,7 @@ const loginAdmin = async (req, res) => {
       id: check._id,
       name: check.name,
     };
-    updateEmployeeLoginStatus(check._id, check.name);
+    await updateEmployeeLoginStatus(check._id, check.name, check.position);
     res.cookie("token", token, {
       httpOnly: true,
       maxAge: oneWeekInMilliseconds,
@@ -167,14 +168,13 @@ const loginAdmin = async (req, res) => {
     res.status(500).json({ message: "Lỗi vui lòng thử lại sau" });
   }
 };
-const getonLineAdmin = async (req, res, next) => {
+const getonLineAdmin = (req, res, next) => {
   try {
-    const query = await AdminOnline.find({});
-    if (query.length === 0) {
+    const online = Array.from(onlineEmployees);
+    if (online.length === 0) {
       res.status(404).json({ message: "Không có người nào " });
     }
-
-    res.json(Array.from(onlineEmployees));
+    res.json(online);
   } catch (err) {
     console.log("====================================");
     console.log(err);
@@ -189,7 +189,42 @@ const logoutOnLineAdmin = async (req, res, next) => {
     if (query.length === 0) {
       res.status(404).json({ message: "Không có người nào " });
     }
-    updateEmployeeLogoutStatus();
+    updateEmployeeLogoutStatus(idAdmin);
+    res.json(query);
+  } catch (err) {
+    console.log("====================================");
+    console.log(err);
+    console.log("====================================");
+    res.status(500).json({ message: "Kết nối thất bại vui lòng thử lại sau" });
+  }
+};
+const updateAdmin = async (req, res, next) => {
+  try {
+    const {
+      id,
+      email,
+      password,
+      phone,
+      dateOfBirth,
+      name,
+      gender,
+      address,
+      position,
+    } = req.body;
+    const query = await Admin.findByIdAndUpdate(
+      { _id: id },
+      {
+        email,
+        password,
+        phone,
+        dateOfBirth,
+        name,
+        gender,
+        address,
+        position,
+      }
+    );
+
     res.json(query);
   } catch (err) {
     console.log("====================================");
@@ -207,4 +242,5 @@ module.exports = {
   getonLineAdmin,
   logoutOnLineAdmin,
   getProfileByID,
+  updateAdmin,
 };

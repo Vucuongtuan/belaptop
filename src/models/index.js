@@ -299,6 +299,7 @@ const AdminSchema = new mongoose.Schema({
   name: String,
   gender: String,
   address: String,
+  position: String,
   create_date: { type: Date, default: Date.now },
   update_date: { type: Date, default: Date.now },
 });

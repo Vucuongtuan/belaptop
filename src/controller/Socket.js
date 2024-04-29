@@ -8,8 +8,12 @@ wss.on("connection", function connection(ws) {
     console.log("received: %s", message);
   });
 });
-const updateEmployeeLoginStatus = (employeeId, employeeName) => {
-  onlineEmployees.add(employeeId);
+const updateEmployeeLoginStatus = (
+  employeeId,
+  employeeName,
+  employeePositon
+) => {
+  onlineEmployees.add({ id: employeeId, name: employeeName });
   wss.clients.forEach(function each(client) {
     if (client.readyState === WebSocket.OPEN) {
       client.send(
