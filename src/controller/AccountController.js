@@ -50,14 +50,7 @@ const getDataByIDAccountUser = async (req, res, next) => {
       });
     }
 
-    console.log("====================================");
-    console.log(query);
-    console.log("====================================");
-
-    const user = await User.findOne(query)
-      .populate("cartID")
-      .populate("AccountId")
-      .exec();
+    const user = await User.findOne(query).populate("cartID").exec();
 
     if (!user) {
       return res.status(404).json({ message: "Không tìm thấy người dùng." });

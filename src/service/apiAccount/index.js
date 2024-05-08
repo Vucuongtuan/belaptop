@@ -17,7 +17,7 @@ const {
 const verifyOTP = require("../../middleware/checkOTP");
 
 accountAPI.get("/", getDataAccountUser);
-accountAPI.get("/query", getDataByIDAccountUser);
+accountAPI.post("/query", getDataByIDAccountUser);
 accountAPI.post("/send-otp", sendOTPToEmailMiddleware);
 accountAPI.post("/", verifyOTP, postDataAccountUser);
 accountAPI.put("/update_id", putDataAccountUser);
