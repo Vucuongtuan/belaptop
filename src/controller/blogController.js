@@ -1,6 +1,7 @@
 const { Blog } = require("../models");
 const fs = require("fs");
 const { getAllProduct } = require("./AllProductController");
+const { Mongoose } = require("mongoose");
 const getAllBlog = async (req, res, next) => {
   try {
     const page = req.query.page || 1;
@@ -30,6 +31,7 @@ const getBlogByIdProduct = async (req, res) => {
     const blog = await Blog.findOne({
       idProduct: idProduct,
     });
+
     if (blog === null) {
       res.status(404).json({
         message: "Không có bài viết nào ",
