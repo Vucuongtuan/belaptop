@@ -1,5 +1,8 @@
 const fs = require("fs");
 const PDFDocument = require("pdfkit");
+const nodemailer = require("nodemailer");
+const path = require("path");
+const vietnameseFontPath = path.join(__dirname, "font-times-new-roman.ttf");
 function generateHeader(doc) {
   doc
     .image("src\\assets\\public\\logo.png", 50, 45, { width: 50 })
@@ -64,8 +67,8 @@ function generateFooter(doc) {
     );
 }
 function createInvoice(invoice, path) {
-  let doc = new PDFDocument({ margin: 50 });
-
+  let doc = new PDFDocument({ margin: 50, font: vietnameseFontPath });
+  doc.font(vietnameseFontPath);
   generateHeader(doc);
   generateCustomerInformation(doc, invoice);
   generateInvoiceTable(doc, invoice);
@@ -73,6 +76,7 @@ function createInvoice(invoice, path) {
 
   doc.end();
   doc.pipe(fs.createWriteStream(path));
+  return "success";
 }
 async function sendEmailWithAttachment(invoice, path) {
   try {
@@ -89,12 +93,12 @@ async function sendEmailWithAttachment(invoice, path) {
 
     let mailOptions = {
       from: process.env.AUTH_EMAIL_SEND_OTP,
-      to: invoice.customerEmail,
+      to: invoice.email,
       subject: "Invoice",
       text: "Invoice",
       attachments: [
         {
-          filename: "invoice.pdf",
+          filename: `/invoice-pdf/hoa_don_${invoice.userId}.pdf`,
           path: path,
           contentType: "application/pdf",
         },
@@ -122,13 +126,15 @@ const createInvoiceAndSendEmail = async (req, res, next) => {
       address,
       total,
     };
-    const invoicePath = "./invoice.pdf";
-    createInvoice(invoice, invoicePath);
+    const invoicePath = `./src/assets/invoicePDF/hoa_don_${userId}.pdf`;
+    const create = createInvoice(invoice, invoicePath);
+    if (create === "success") {
+      await sendEmailWithAttachment(invoice, invoicePath);
 
-    await sendEmailWithAttachment(invoice, invoicePath);
-
-    next();
+      next();
+    }
   } catch (error) {
+    console.log(error);
     res.status(500).json({ message: "Lỗi xử lý vui lòng thử lại sau" });
   }
 };

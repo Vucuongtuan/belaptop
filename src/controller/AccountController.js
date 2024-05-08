@@ -143,7 +143,7 @@ const postDataAccountUser = async (req, res, next) => {
       name,
       address,
       email,
-      password: bcrygt.hashSync(password, salt),
+      password: password,
       phone,
       cartID: cart._id,
     });
@@ -152,9 +152,6 @@ const postDataAccountUser = async (req, res, next) => {
       message: "thêm người dùng thành công",
     });
   } catch (err) {
-    console.log("====================================");
-    console.log(err);
-    console.log("====================================");
     res.status(500).json({
       message: "Error connecting to the database !!!",
     });

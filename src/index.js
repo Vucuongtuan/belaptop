@@ -88,6 +88,12 @@ app.use(
   "/assets/brands/",
   express.static(path.join(__dirname, "./assets/brands"))
 );
+//invoice send mail
+app.use(
+  "/invoicePDF",
+  express.static(path.join(__dirname, "./assets/invoicePDF"))
+);
+
 //config .env
 require("dotenv").config();
 
@@ -121,7 +127,6 @@ app.use("/token/", routerToken);
 app.use("/blog/", routerBlog);
 app.use("/comment/", routerComment);
 
-//invoice send mail
 //run server
 const port = 4000;
 app.listen(port, function () {
