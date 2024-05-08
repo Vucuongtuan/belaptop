@@ -38,6 +38,7 @@
 
 // module.exports = { addToCart, viewCart };
 // controllers/cartController.js
+const { createInvoice } = require("../middleware/invoice/createInvoice");
 const { User, Cart, ProductLaptop, Keybourd, Mouse } = require("../models");
 
 const addToCart = async (req, res) => {

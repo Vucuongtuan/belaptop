@@ -23,6 +23,7 @@ const cookieParser = require("cookie-parser");
 const routerToken = require("./service/apiCheckToken");
 const routerBlog = require("./service/apiBlog");
 const routerComment = require("./service/apiComment");
+
 //setup session cookies
 app.use(cookieParser());
 app.use(
@@ -81,6 +82,7 @@ app.use(
   "/image/spa",
   express.static(path.join(__dirname, "./assets/image/spa"))
 );
+app.use("/public", express.static(path.join(__dirname, "./assets/public")));
 //static file path
 app.use(
   "/assets/brands/",
@@ -118,6 +120,8 @@ app.use("/upload/", routerUpload);
 app.use("/token/", routerToken);
 app.use("/blog/", routerBlog);
 app.use("/comment/", routerComment);
+
+//invoice send mail
 //run server
 const port = 4000;
 app.listen(port, function () {
