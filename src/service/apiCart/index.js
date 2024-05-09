@@ -7,5 +7,5 @@ const {
 const routerCart = express.Router();
 
 routerCart.get("/", viewCart);
-routerCart.post("/", createInvoiceAndSendEmail, addToCart);
+routerCart.post("/", addToCart);
 module.exports = routerCart;

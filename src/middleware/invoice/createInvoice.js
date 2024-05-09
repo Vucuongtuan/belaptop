@@ -51,7 +51,7 @@ function generateInvoiceTable(doc, invoice) {
       doc,
       position,
       i,
-      item.description,
+      item.name,
       item.total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "VND"
     );
   }

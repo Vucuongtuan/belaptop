@@ -4,6 +4,7 @@ const path = require("path");
 const fs = require("fs");
 const { createComment } = require("./likeAndComment");
 const messageError = (err) => {
+  console.log(err);
   return res.status(500).json({
     message: "Kết nối thất bai !!!",
     err: err,
@@ -162,7 +163,6 @@ const updateKeybourd = async (req, res, next) => {
     const id = req.query.id;
     const {
       name,
-      thumbnail,
       description,
       totalPurchases,
       layout,
@@ -186,7 +186,6 @@ const updateKeybourd = async (req, res, next) => {
     } = req.body;
     await Keybourd.findByIdAndUpdate(id, {
       name,
-      thumbnail,
       layout,
       switch_key,
       description,
@@ -207,8 +206,8 @@ const updateKeybourd = async (req, res, next) => {
       product_brand,
       discount_percent,
       inventory,
-      update_date: { type: Date, default: Date.now() },
     })
+
       .then((data) => {
         return res.json({
           message: "Sửa thành công",
@@ -216,13 +215,16 @@ const updateKeybourd = async (req, res, next) => {
         });
       })
       .catch((err) => {
-        return res.json("Sửa thất bại");
+        console.log(err);
+        return res.status(500).json("Sửa thất bại");
       });
   } catch (err) {
-    return messageError(err);
+    console.log(err);
+    return res.status(500).json("Sửa thất bại");
   }
 };
 const deleteKeybourd = async (req, res, next) => {
+  console.log(req.query.id);
   try {
     const id = req.query.id;
     const deleteData = await Keybourd.findByIdAndDelete(id);

@@ -2,6 +2,7 @@ const { Blog } = require("../models");
 const fs = require("fs");
 const { getAllProduct } = require("./AllProductController");
 const { Mongoose } = require("mongoose");
+const { default: slugify } = require("slugify");
 const getAllBlog = async (req, res, next) => {
   try {
     const page = req.query.page || 1;
@@ -66,13 +67,14 @@ const getBlogById = async (req, res, next) => {
 const getBlogByName = async (req, res, next) => {
   try {
     const name = req.body.name;
-    const getByName = await Blog.find({
-      name: { $regex: name, $options: "i" },
+    const getByName = await Blog.findOne({
+      title: { $regex: name, $options: "i" },
     });
     if (getByName === null) {
       res.status(404).json({ message: "Bài blog không tồn tại" });
       return;
     }
+    console.log(getByName);
     res.status(200).json(getByName);
   } catch (err) {
     console.log(err);
@@ -95,9 +97,18 @@ const createBlog = async (req, res, next) => {
     }
 
     const { title, description, body, author, idAuthor, idProduct } = req.body;
+    const slug = slugify(title, {
+      replacement: "-",
+      remove: undefined,
+      lower: false,
+      strict: false,
+      locale: "vi",
+      trim: true,
+    });
     const post = await Blog.create({
       title,
       description,
+      slug,
       body,
       thumbnail:
         process.env.BASE_URL + "/image/" + reqFile.filename + "." + ext,

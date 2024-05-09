@@ -17,8 +17,8 @@ routerMouse.get("/", getDataMouse);
 routerMouse.get("/query", getDataById);
 routerMouse.get("/brand", getMouseToBrand);
 routerMouse.post("/", upload.array("thumbnail"), postDataMouse);
-routerMouse.put("/update_id", updateDataMouse);
-routerMouse.delete("/delete_id", deleteDataMouse);
+routerMouse.put("/id", updateDataMouse);
+routerMouse.delete("/id", deleteDataMouse);
 routerMouse.get("/search", searchDataMouse);
 routerMouse.post("/price", selectMousePrice);
 

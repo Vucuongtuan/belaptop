@@ -324,6 +324,7 @@ const BlogSchema = new Schema({
   body: String,
   thumbnail: String,
   description: String,
+  slug: String,
   author: String,
   idAuthor: {
     type: Schema.Types.ObjectId,

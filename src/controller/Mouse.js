@@ -132,15 +132,25 @@ const postDataMouse = async (req, res, next) => {
 const updateDataMouse = async (req, res, next) => {
   try {
     const id = req.query.id;
-    const { name, total, guarantee, details } = req.body;
+    const {
+      name,
+      total,
+      description,
+      guarantee,
+      details,
+      discount_percent,
+      inventory,
+      brands,
+    } = req.body;
     const updateData = await Mouse.findByIdAndUpdate(id, {
       name,
       total,
       guarantee,
       details,
-      thumbnail,
+      description,
       discount_percent,
       inventory,
+      brands,
     });
 
     return res.json({
@@ -148,6 +158,7 @@ const updateDataMouse = async (req, res, next) => {
       data: updateData,
     });
   } catch (err) {
+    console.log(err);
     return res.status(500).json({
       message: "Lỗi kết nối vui lòng thử lại sau",
     });
@@ -162,7 +173,10 @@ const deleteDataMouse = async (req, res, next) => {
         message: "Không có dữ liệu !!",
       });
     }
-    return res.json(deleteData);
+    return res.json({
+      message: "Đã xóa thành công !!!",
+      data: deleteData,
+    });
   } catch (err) {
     return res.status(500).json({
       message: "Lỗi kết nối vui lòng thử lại sau",

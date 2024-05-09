@@ -260,9 +260,10 @@ const deleteProduct = async (req, res, next) => {
   try {
     const id = req.query.id;
     const deleteProduct = await ProductLaptop.findByIdAndDelete(id);
-    console.log("====================================");
-    console.log(deleteProduct);
-    console.log("====================================");
+    res.json({
+      message: "Xóa sản phẩm thành công ",
+      data: deleteProduct,
+    });
   } catch (err) {
     return res.status(500).json({
       message: "Kết nối thất bại thử lại sau !!!",

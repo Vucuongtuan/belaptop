@@ -21,9 +21,9 @@ routerProduct.get("/brand", getProductToBrand);
 routerProduct.get("/query", getByIdProduct);
 routerProduct.get("/trend", getProductTrend);
 routerProduct.post("/", upload.array("thumbnail"), postProduct);
-routerProduct.put("/", updateProduct);
-routerProduct.delete("/", deleteProduct);
-routerProduct.delete("/search", searchProduct);
+routerProduct.put("/id", updateProduct);
+routerProduct.delete("/id", deleteProduct);
+routerProduct.post("/search", searchProduct);
 routerProduct.post("/price", selectProductPrice);
 
 module.exports = routerProduct;
