@@ -89,7 +89,7 @@ const likeComment = async (req, res) => {
         .status(401)
         .json({ message: "Vui lòng đăng nhập để có thể bày tỏ cảm xúc" });
     }
-
+    global.io.emit("like", { userId, idProduct, commentId });
     const comment = await LikeAndComment.findOne({
       idProduct: idProduct,
       "comments._id": commentId,

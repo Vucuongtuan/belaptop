@@ -23,7 +23,9 @@ const cookieParser = require("cookie-parser");
 const routerToken = require("./service/apiCheckToken");
 const routerBlog = require("./service/apiBlog");
 const routerComment = require("./service/apiComment");
-
+const http = require("http").createServer(app);
+const io = require("socket.io")(http);
+global.io = io;
 //setup session cookies
 app.use(cookieParser());
 app.use(
@@ -51,7 +53,7 @@ app.get("/post", (req, res) => {
 app.get("/", (req, res) => {
   const data = {
     pageTitle: "Trang chủ",
-    message: "Xin chào, đây là trang chủ!",
+    message: "List Api",
   };
   res.render("index", data);
 });
@@ -127,9 +129,20 @@ app.use("/token/", routerToken);
 app.use("/blog/", routerBlog);
 app.use("/comment/", routerComment);
 
+io.on("connection", (socket) => {
+  console.log("a user connected");
+
+  socket.on("my-event", (data) => {
+    console.log("Received data:", data);
+  });
+
+  socket.on("disconnect", () => {
+    console.log("user disconnected");
+  });
+});
 //run server
 const port = 4000;
-app.listen(port, function () {
+http.listen(port, function () {
   console.log("====================================");
   console.log("Run server on port " + port);
   console.log("====================================");
