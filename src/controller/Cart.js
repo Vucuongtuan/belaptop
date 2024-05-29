@@ -124,4 +124,37 @@ const getHoaDonByUser = async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 };
-module.exports = { addToCart, viewCart, getAllHoaDon, getHoaDonByUser };
+const updateHoaDonByUser = async (req, res) => {
+  try {
+    const { id, idItem, status } = req.body;
+    const update = await User.findByIdAndUpdate(
+      id,
+      {
+        $set: {
+          "cartID.items.$[elem].status": status,
+        },
+      },
+      {
+        new: true,
+        arrayFilters: [{ "elem._id": idItem }],
+      }
+    );
+    if (update.length === 0) {
+      return res.status(404).send("User not found");
+    }
+    return res.json({
+      message: "Cập nhật thành công",
+      data: update,
+    });
+  } catch (error) {
+    console.error("Error viewing cart:", error.message);
+    res.status(500).send("Internal Server Error");
+  }
+};
+module.exports = {
+  addToCart,
+  viewCart,
+  getAllHoaDon,
+  getHoaDonByUser,
+  updateHoaDonByUser,
+};
