@@ -21,15 +21,15 @@ const CartSchema = new Schema(
     email: String,
     phone: Number,
     address: String,
-    total: Number,
     items: [
       {
-        thumbnail: String,
-        description: String,
-        name: String,
-        total: Number,
-        productId: { type: Schema.Types.ObjectId, required: true },
-        quantity: { type: Number, default: 1 },
+        products: [
+          {
+            productId: { type: Schema.Types.ObjectId, required: true },
+            quantity: { type: Number, default: 1 },
+          },
+        ],
+        status: { type: String, default: "Đang đóng gói" },
       },
     ],
   },
@@ -66,7 +66,7 @@ const ProductLaptopSchema = new Schema(
         type: String,
       },
     ],
-    totalPurchases: String,
+    totalPurchases: Number,
     details: {
       cpu: String,
       ram: String,
@@ -93,6 +93,7 @@ const ProductLaptopSchema = new Schema(
     product_category: {
       type: Schema.Types.ObjectId,
       ref: "type_product_laptop",
+      required: true,
     },
     product_brand: {
       type: Schema.Types.ObjectId,
@@ -102,7 +103,7 @@ const ProductLaptopSchema = new Schema(
     product_content: {
       type: Schema.Types.ObjectId,
       ref: "post_content",
-      required: false,
+      required: true,
     },
     create_product: { type: Date, default: Date.now },
     update_product: { type: Date, default: Date.now },
@@ -131,7 +132,7 @@ const MouseSchema = new Schema(
     total: Number,
     guarantee: String,
     description: String,
-    totalPurchases: String,
+    totalPurchases: Number,
     brands: String,
     thumbnail: [
       {
@@ -156,7 +157,7 @@ const MouseSchema = new Schema(
       max_acceleration: String,
       max_speed: String,
       size: String,
-      weight: String,
+      weight: Number,
     },
     discount_percent: Number,
     inventory: Number,
@@ -173,6 +174,7 @@ const MouseSchema = new Schema(
     product_content: {
       type: Schema.Types.ObjectId,
       ref: "post_content",
+      required: true,
     },
   },
   {
@@ -184,14 +186,13 @@ const BannerQcSchema = new Schema(
   {
     thumbnail: String,
     description: String,
-    id: String,
   },
   { collection: "banner-qc" }
 );
 const BrandsSchema = new Schema(
   {
     name: String,
-    type: [String],
+    type: String,
     description: String,
     thumbnail: String,
   },
@@ -246,6 +247,7 @@ const KeyboardSchema = new Schema(
     product_content: {
       type: Schema.Types.ObjectId,
       ref: "post_content",
+      required: true,
     },
   },
   {
@@ -291,94 +293,6 @@ const otpSchema = new mongoose.Schema({
   otp: String,
   createdAt: { type: Date, default: Date.now, expires: 300 }, // Set expiry for 5 minutes
 });
-const AdminSchema = new mongoose.Schema({
-  email: String,
-  password: String,
-  phone: String,
-  dateOfBirth: Date,
-  name: String,
-  gender: String,
-  address: String,
-  position: String,
-  create_date: { type: Date, default: Date.now },
-  update_date: { type: Date, default: Date.now },
-});
-const RevenueSchema = new Schema(
-  {
-    total: [String],
-    products: [
-      {
-        _id: String,
-        thumbnailUrl: String,
-        name: String,
-        revenue: [String],
-      },
-    ],
-    create_product: { type: Date, default: Date.now },
-    update_product: { type: Date, default: Date.now },
-  },
-  { collection: "revenue" }
-);
-const BlogSchema = new Schema({
-  title: String,
-  body: String,
-  thumbnail: String,
-  description: String,
-  slug: String,
-  author: String,
-  idAuthor: {
-    type: Schema.Types.ObjectId,
-    required: true,
-  },
-  idProduct: String,
-  date_create: { type: Date, default: Date.now },
-});
-const LikeAndCommentSchema = new Schema({
-  idProduct: String,
-  comments: [
-    {
-      userId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-      },
-      name: String,
-      comment: String,
-      rating: {
-        type: Number,
-        min: 1,
-        max: 5,
-      },
-      date_create: { type: Date, default: Date.now() },
-      likes: [
-        {
-          userId: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "User",
-          },
-        },
-      ],
-      replies: [
-        {
-          userId: String,
-          name: String,
-          comment: String,
-          date_create: { type: Date, default: Date.now() },
-        },
-      ],
-    },
-  ],
-});
-const adminOnline = new Schema({
-  idAdmin: String,
-  name: String,
-  date_create: { type: Date, default: Date.now() },
-});
-const AdminOnline = mongoose.model("AdminOnline", adminOnline);
-const LikeAndComment = mongoose.model(
-  "LikeAndCommentSchema",
-  LikeAndCommentSchema
-);
-const Blog = mongoose.model("blog", BlogSchema);
 const OTP = mongoose.model("Otp", otpSchema);
 const User = mongoose.model("User", UserSchema);
 const Brands = mongoose.model("brands", BrandsSchema);
@@ -396,9 +310,7 @@ const KeybourdType = mongoose.model(
   "type_product_keybourd",
   KeybourdTypeSchema
 );
-const Admin = mongoose.model("admin", AdminSchema);
 const PostContent = mongoose.model("post_content", PostContentSchema);
-const Revenue = mongoose.model("all_products", RevenueSchema);
 module.exports = {
   User,
   ProductTypeLaptop,
@@ -411,10 +323,5 @@ module.exports = {
   Keybourd,
   KeybourdType,
   PostContent,
-  Revenue,
   OTP,
-  Admin,
-  Blog,
-  LikeAndComment,
-  AdminOnline,
 };
