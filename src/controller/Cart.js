@@ -38,72 +38,32 @@
 
 // module.exports = { addToCart, viewCart };
 // controllers/cartController.js
-const { createInvoice } = require("../middleware/invoice/createInvoice");
-const { User, Cart, ProductLaptop, Keybourd, Mouse } = require("../models");
-
+const { User, Cart } = require("../models");
+const LIMIT = 10;
 const addToCart = async (req, res) => {
   try {
-    const { userId, listProduct, name, email, phone, address, total } =
-      req.body;
-    const idUser = await User.findOne({ _id: userId });
-
-    const idCart = idUser.cartID;
+    const { userId, listProduct, name, email, phone, address } = req.body;
+    const cartData = await User.findOne({ userId });
+    if (cartData.length === 0) {
+      res.json({ message: "Không thể lưu thông tin khách hàng" });
+    }
+    const idCart = cartData.data._id;
     const insertDataCart = await Cart.findByIdAndUpdate(
-      idCart,
+      { _id: idCart },
       {
         name: name,
         email: email,
         phone: phone,
         address: address,
-        total: total,
         items: listProduct,
-      },
-      { new: true }
-    );
-    for (const productId of listProduct) {
-      const search = await Promise.all([
-        ProductLaptop.findById(productId._id),
-        Mouse.findById(productId._id),
-        Keybourd.findById(productId._id),
-      ]);
-      if (search[0] !== null) {
-        const convertNumber = parseInt(search[0].totalPurchases);
-        const updateNumber = convertNumber + 1;
-        const string = updateNumber.toString();
-
-        await ProductLaptop.findByIdAndUpdate(productId._id, {
-          $set: { totalPurchases: string },
-          $inc: { inventory: -1 },
-        });
-      } else if (search[1] !== null) {
-        const convertNumber = parseInt(search[1].totalPurchases);
-        const updateNumber = convertNumber + 1;
-        const string = updateNumber.toString();
-
-        await Mouse.findByIdAndUpdate(productId._id, {
-          $set: { totalPurchases: string },
-          $inc: { inventory: -1 },
-        });
-      } else if (search[2] !== null) {
-        const convertNumber = parseInt(search[2].totalPurchases);
-        const updateNumber = convertNumber + 1;
-        const string = updateNumber.toString();
-
-        await Keybourd.findByIdAndUpdate(productId._id, {
-          $set: { totalPurchases: string },
-          $inc: { inventory: -1 },
-        });
       }
-    }
+    );
     return res.json({
       message: "Mua hàng thành công",
       data: insertDataCart,
     });
   } catch (error) {
-    console.log("====================================");
-    console.log(error);
-    console.log("====================================");
-    return res.status(500).send(error);
+    return res.status(500).send("Internal Server Error");
   }
 };
 
@@ -119,5 +79,49 @@ const viewCart = async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 };
+const getAllHoaDon = async (req, res) => {
+  try {
+    const { page, limit } = req.query;
+    const pageNumber = parseInt(page) || 1;
+    const totalDocuments = await Cart.countDocuments({});
+    const totalPages = Math.ceil(totalDocuments / LIMIT);
+    const get = await Cart.find({})
+      .skip((pageNumber - 1) * LIMIT)
+      .limit(limit || LIMIT);
 
-module.exports = { addToCart, viewCart };
+    if (get.length === 0) {
+      return res.status(404).json({
+        message: "Không có sản phẩm nào!!!",
+      });
+    }
+    return res.json({
+      message: "Lấy all hóa đơn thành công",
+      page: page || 1,
+      totalPages: totalPages,
+      data: get,
+    });
+  } catch (error) {
+    console.error("Error viewing cart:", error.message);
+    res.status(500).send("Internal Server Error");
+  }
+};
+const getHoaDonByUser = async (req, res) => {
+  try {
+    const id = req.body.id;
+    const get = await User.findOne({ _id: id }).populate("cartID");
+    if (get === null) {
+      return res.status(404).json({
+        message: "Không có sản phẩm nào!!!",
+      });
+    }
+    return res.json({
+      message: "Lấy all hóa đơn thành công",
+
+      data: get,
+    });
+  } catch (error) {
+    console.error("Error viewing cart:", error.message);
+    res.status(500).send("Internal Server Error");
+  }
+};
+module.exports = { addToCart, viewCart, getAllHoaDon, getHoaDonByUser };
