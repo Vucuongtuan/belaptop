@@ -43,26 +43,38 @@ const LIMIT = 10;
 const addToCart = async (req, res) => {
   try {
     const { userId, listProduct, name, email, phone, address } = req.body;
-    const cartData = await User.findOne({ userId });
-    if (cartData.length === 0) {
-      res.json({ message: "Không thể lưu thông tin khách hàng" });
+    const cartData = await User.findOne({ _id: userId });
+    if (cartData === null) {
+      res.status(404).json({ message: "Không thể lưu thông tin khách hàng" });
+      return;
     }
-    const idCart = cartData.data._id;
-    const insertDataCart = await Cart.findByIdAndUpdate(
-      { _id: idCart },
-      {
-        name: name,
-        email: email,
-        phone: phone,
-        address: address,
-        items: listProduct,
-      }
-    );
+
+    const idCart = cartData.cartID.toString();
+    const cart = await Cart.findById(idCart);
+    const hasExistingItem = cart.items.length > 0;
+
+    const cartUpdate = await Cart.findByIdAndUpdate(idCart, {
+      $push: {
+        items: {
+          $each: [
+            {
+              products: listProduct,
+              status: "Đang đóng gói",
+            },
+          ],
+          $position: hasExistingItem ? cart.items.length : 0,
+        },
+      },
+    });
+
     return res.json({
       message: "Mua hàng thành công",
-      data: insertDataCart,
+      data: cartUpdate,
     });
   } catch (error) {
+    console.log("====================================");
+    console.log(error);
+    console.log("====================================");
     return res.status(500).send("Internal Server Error");
   }
 };
@@ -127,21 +139,13 @@ const getHoaDonByUser = async (req, res) => {
 const updateHoaDonByUser = async (req, res) => {
   try {
     const { id, idItem, status } = req.body;
-    const update = await User.findByIdAndUpdate(
-      id,
-      {
-        $set: {
-          "cartID.items.$[elem].status": status,
-        },
-      },
-      {
-        new: true,
-        arrayFilters: [{ "elem._id": idItem }],
-      }
+    const get = await User.findById(id);
+    const idCart = get.cartID;
+    const update = await Cart.findOneAndUpdate(
+      { idCart, "items._id": idItem },
+      { $set: { "items.$.status": status } },
+      { new: true }
     );
-    if (update.length === 0) {
-      return res.status(404).send("User not found");
-    }
     return res.json({
       message: "Cập nhật thành công",
       data: update,
