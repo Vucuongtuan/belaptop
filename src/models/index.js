@@ -326,10 +326,7 @@ const BlogSchema = new Schema({
     type: Schema.Types.ObjectId,
     required: true,
   },
-  idProduct: {
-    type: Schema.Types.ObjectId,
-    required: false,
-  },
+  idProduct: String,
   date_create: { type: Date, default: Date.now },
 });
 const LikeAndCommentSchema = new Schema({

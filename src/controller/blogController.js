@@ -28,11 +28,13 @@ const getAllBlog = async (req, res, next) => {
 };
 const getBlogByIdProduct = async (req, res) => {
   try {
-    const { idProduct } = req.body;
+    const { id } = req.body;
     const blog = await Blog.findOne({
-      idProduct: idProduct,
+      idProduct: id,
     });
-
+    console.log("====================================");
+    console.log(id);
+    console.log("====================================");
     if (blog === null) {
       res.status(404).json({
         message: "Không có bài viết nào ",
