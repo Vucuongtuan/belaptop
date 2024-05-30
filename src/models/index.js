@@ -288,22 +288,82 @@ const PostContentSchema = new Schema(
   },
   { collection: "post_content" }
 );
-const BlogSchema = new Schema(
+const RevenueSchema = new Schema(
   {
-    name: String,
-    description: String,
-    content: String,
-    productCollection: {
-      type: Schema.Types.ObjectId,
-      refPath: "productCollectionRef",
-      required: true,
-    },
-    productCollectionRef: {
-      type: String,
-      enum: ["product_laptop", "product-mouse", "product_keyboard"],
-    },
+    total: [String],
+    products: [
+      {
+        _id: String,
+        thumbnailUrl: String,
+        name: String,
+        revenue: [String],
+      },
+    ],
+    create_product: { type: Date, default: Date.now },
+    update_product: { type: Date, default: Date.now },
   },
-  { collection: "blogs" }
+  { collection: "revenue" }
+);
+const BlogSchema = new Schema({
+  title: String,
+  body: String,
+  thumbnail: String,
+  description: String,
+  author: String,
+  idAuthor: {
+    type: Schema.Types.ObjectId,
+    required: true,
+  },
+  idProduct: {
+    type: Schema.Types.ObjectId,
+    required: false,
+  },
+  date_create: { type: Date, default: Date.now },
+});
+const LikeAndCommentSchema = new Schema({
+  idProduct: String,
+  comments: [
+    {
+      userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+      name: String,
+      comment: String,
+      rating: {
+        type: Number,
+        min: 1,
+        max: 5,
+      },
+      date_create: { type: Date, default: Date.now() },
+      likes: [
+        {
+          userId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+          },
+        },
+      ],
+      replies: [
+        {
+          userId: String,
+          name: String,
+          comment: String,
+          date_create: { type: Date, default: Date.now() },
+        },
+      ],
+    },
+  ],
+});
+const adminOnline = new Schema({
+  idAdmin: String,
+  name: String,
+  date_create: { type: Date, default: Date.now() },
+});
+const AdminOnline = mongoose.model("AdminOnline", adminOnline);
+const LikeAndComment = mongoose.model(
+  "LikeAndCommentSchema",
+  LikeAndCommentSchema
 );
 const otpSchema = new mongoose.Schema({
   email: String,
