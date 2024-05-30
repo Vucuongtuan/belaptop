@@ -6,12 +6,13 @@ const {
   getHoaDonByUser,
   updateHoaDonByUser,
 } = require("../../controller/Cart");
+const updateProduct = require("../../middleware/updateProduct");
 
 const routerCart = express.Router();
 
 routerCart.get("/", viewCart);
 routerCart.get("/all", getAllHoaDon);
 routerCart.post("/", getHoaDonByUser);
-routerCart.post("/", addToCart);
+routerCart.post("/add", updateProduct, addToCart);
 routerCart.post("/update", updateHoaDonByUser);
 module.exports = routerCart;

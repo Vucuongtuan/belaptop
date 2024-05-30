@@ -21,14 +21,20 @@ const CartSchema = new Schema(
     email: String,
     phone: Number,
     address: String,
+    total: Number,
     items: [
       {
         products: [
           {
-            productId: { type: Schema.Types.ObjectId, required: true },
+            idProduct: String,
+            thumbnail: String,
+            name: String,
+            total: Number,
+            description: String,
             quantity: { type: Number, default: 1 },
           },
         ],
+        total: Number,
         status: { type: String, default: "Đang đóng gói" },
       },
     ],
@@ -212,7 +218,7 @@ const KeyboardSchema = new Schema(
     ],
     layout: String,
     description: String,
-    totalPurchases: String,
+    totalPurchases: Number,
     switch_key: String,
     pin: String,
     personal: String,

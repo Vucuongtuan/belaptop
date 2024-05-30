@@ -42,7 +42,8 @@ const { User, Cart } = require("../models");
 const LIMIT = 10;
 const addToCart = async (req, res) => {
   try {
-    const { userId, listProduct, name, email, phone, address } = req.body;
+    const { userId, listProduct, name, email, phone, address, total } =
+      req.body;
     const cartData = await User.findOne({ _id: userId });
     if (cartData === null) {
       res.status(404).json({ message: "Không thể lưu thông tin khách hàng" });
@@ -52,16 +53,30 @@ const addToCart = async (req, res) => {
     const idCart = cartData.cartID.toString();
     const cart = await Cart.findById(idCart);
     const hasExistingItem = cart.items.length > 0;
+    const newItem = {
+      products: listProduct.map((product) => ({
+        idProduct: product._id,
+        thumbnail: product.thumbnail,
+        name: product.name,
+        total: parseInt(product.total),
+        description: product.description,
+        quantity: 1,
+      })),
+      total: parseInt(total),
+      status: "Đang đóng gói",
+    };
+    const totalType = typeof total === "number" ? total : parseInt(total);
+    const tongTotal = cart.total + totalType;
 
     const cartUpdate = await Cart.findByIdAndUpdate(idCart, {
+      name,
+      email,
+      phone,
+      address,
+      total: tongTotal,
       $push: {
         items: {
-          $each: [
-            {
-              products: listProduct,
-              status: "Đang đóng gói",
-            },
-          ],
+          $each: [newItem],
           $position: hasExistingItem ? cart.items.length : 0,
         },
       },
