@@ -304,6 +304,12 @@ const RevenueSchema = new Schema(
   },
   { collection: "revenue" }
 );
+const otpSchema = new mongoose.Schema({
+  email: String,
+  otp: String,
+  createdAt: { type: Date, default: Date.now, expires: 300 }, // Set expiry for 5 minutes
+});
+
 const BlogSchema = new Schema({
   title: String,
   body: String,
@@ -355,6 +361,17 @@ const LikeAndCommentSchema = new Schema({
     },
   ],
 });
+const AdminSchema = new mongoose.Schema({
+  email: String,
+  password: String,
+  phone: String,
+  dateOfBirth: Date,
+  name: String,
+  gender: String,
+  address: String,
+  create_date: { type: Date, default: Date.now },
+  update_date: { type: Date, default: Date.now },
+});
 const adminOnline = new Schema({
   idAdmin: String,
   name: String,
@@ -365,11 +382,7 @@ const LikeAndComment = mongoose.model(
   "LikeAndCommentSchema",
   LikeAndCommentSchema
 );
-const otpSchema = new mongoose.Schema({
-  email: String,
-  otp: String,
-  createdAt: { type: Date, default: Date.now, expires: 300 }, // Set expiry for 5 minutes
-});
+const Blog = mongoose.model("blog", BlogSchema);
 const OTP = mongoose.model("Otp", otpSchema);
 const User = mongoose.model("User", UserSchema);
 const Brands = mongoose.model("brands", BrandsSchema);
@@ -387,8 +400,9 @@ const KeybourdType = mongoose.model(
   "type_product_keybourd",
   KeybourdTypeSchema
 );
+const Admin = mongoose.model("admin", AdminSchema);
 const PostContent = mongoose.model("post_content", PostContentSchema);
-const Blog = mongoose.model("blogs", BlogSchema);
+const Revenue = mongoose.model("all_products", RevenueSchema);
 module.exports = {
   User,
   ProductTypeLaptop,
@@ -401,6 +415,10 @@ module.exports = {
   Keybourd,
   KeybourdType,
   PostContent,
-  Blog,
+  Revenue,
   OTP,
+  Admin,
+  Blog,
+  LikeAndComment,
+  AdminOnline,
 };
