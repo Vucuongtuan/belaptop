@@ -288,6 +288,23 @@ const PostContentSchema = new Schema(
   },
   { collection: "post_content" }
 );
+const BlogSchema = new Schema(
+  {
+    name: String,
+    description: String,
+    content: String,
+    productCollection: {
+      type: Schema.Types.ObjectId,
+      refPath: "productCollectionRef",
+      required: true,
+    },
+    productCollectionRef: {
+      type: String,
+      enum: ["product_laptop", "product-mouse", "product_keyboard"],
+    },
+  },
+  { collection: "blogs" }
+);
 const otpSchema = new mongoose.Schema({
   email: String,
   otp: String,
@@ -311,6 +328,7 @@ const KeybourdType = mongoose.model(
   KeybourdTypeSchema
 );
 const PostContent = mongoose.model("post_content", PostContentSchema);
+const Blog = mongoose.model("blogs", BlogSchema);
 module.exports = {
   User,
   ProductTypeLaptop,
@@ -323,5 +341,6 @@ module.exports = {
   Keybourd,
   KeybourdType,
   PostContent,
+  Blog,
   OTP,
 };
