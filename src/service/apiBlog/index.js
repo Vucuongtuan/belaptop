@@ -11,7 +11,7 @@ const upload = multer({ dest: "src/assets/image" });
 const routerBlog = express.Router();
 routerBlog.get("/all", getAllBlog);
 routerBlog.post("/name", getBlogByName);
-routerBlog.post("/query", getBlogById);
+routerBlog.post("/:id", getBlogById);
 routerBlog.post("/create", upload.single("thumbnail"), createBlog);
 routerBlog.post("/product", getBlogByIdProduct);
 

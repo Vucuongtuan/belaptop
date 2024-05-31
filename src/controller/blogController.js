@@ -52,7 +52,7 @@ const getBlogByIdProduct = async (req, res) => {
 };
 const getBlogById = async (req, res, next) => {
   try {
-    const id = req.query.id;
+    const id = req.params.id;
     const getById = await Blog.findById(id);
     if (getById === null) {
       res.status(404).json({ message: "Bài blog không tồn tại" });
