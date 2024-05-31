@@ -28,13 +28,10 @@ const getAllBlog = async (req, res, next) => {
 };
 const getBlogByIdProduct = async (req, res) => {
   try {
-    const { id } = req.body;
+    const { id } = req.params;
     const blog = await Blog.findOne({
       idProduct: id,
     });
-    console.log("====================================");
-    console.log(id);
-    console.log("====================================");
     if (blog === null) {
       res.status(404).json({
         message: "Không có bài viết nào ",
@@ -45,8 +42,9 @@ const getBlogByIdProduct = async (req, res) => {
     res.json(blog);
   } catch (err) {
     console.log(err);
-    res.status(500).json({
-      message: "Lỗi xử lý vui lòng thử lại sau",
+    return res.status(500).json({
+      message: "Lỗi xử lý vui lòng thử lại sau !",
+      data: req.body,
     });
   }
 };
@@ -62,7 +60,7 @@ const getBlogById = async (req, res, next) => {
   } catch (err) {
     console.log(err);
     res.status(500).json({
-      message: "Lỗi xử lý vui lòng thử lại sau",
+      message: "Lỗi xử lý vui lòng thử lại sau !!",
     });
   }
 };

@@ -13,6 +13,6 @@ routerBlog.get("/all", getAllBlog);
 routerBlog.post("/name", getBlogByName);
 routerBlog.post("/:id", getBlogById);
 routerBlog.post("/create", upload.single("thumbnail"), createBlog);
-routerBlog.post("/product", getBlogByIdProduct);
+routerBlog.post("/product/:id", getBlogByIdProduct);
 
 module.exports = routerBlog;
