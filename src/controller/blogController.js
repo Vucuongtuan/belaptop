@@ -30,7 +30,7 @@ const getNewBlog = async (req, res, next) => {
   try {
     const page = req.query.page || 1;
     const limit = req.query.limit || process.env.LIMIT;
-    const data = await Blog.find()
+    const data = await Blog.find({ idProduct: "null" })
       .sort({ date_create: -1 })
       .skip((page - 1) * limit)
       .limit(limit);
