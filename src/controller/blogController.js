@@ -60,7 +60,7 @@ const getBlogById = async (req, res, next) => {
   } catch (err) {
     console.log(err);
     res.status(500).json({
-      message: "Lỗi xử lý vui lòng thử lại sau !!",
+      message: "Lỗi xử lý vui lòng thử lại sau !!!!",
     });
   }
 };
@@ -84,6 +84,9 @@ const getBlogByName = async (req, res, next) => {
   }
 };
 const createBlog = async (req, res, next) => {
+  console.log("====================================");
+  console.log("fsdfds");
+  console.log("====================================");
   try {
     const reqFile = req.file;
 
@@ -121,7 +124,7 @@ const createBlog = async (req, res, next) => {
   } catch (err) {
     console.log(err);
     res.status(500).json({
-      message: "Lỗi xử lý vui lòng thử lại sau",
+      message: "Lỗi xử lý vui lòng thử lại sau !!!",
     });
   }
 };

@@ -316,19 +316,22 @@ const otpSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now, expires: 300 }, // Set expiry for 5 minutes
 });
 
-const BlogSchema = new Schema({
-  title: String,
-  body: String,
-  thumbnail: String,
-  description: String,
-  author: String,
-  idAuthor: {
-    type: Schema.Types.ObjectId,
-    required: true,
+const BlogSchema = new Schema(
+  {
+    title: String,
+    body: String,
+    thumbnail: String,
+    description: String,
+    author: String,
+    idAuthor: {
+      type: Schema.Types.ObjectId,
+      required: true,
+    },
+    idProduct: String,
+    date_create: { type: Date, default: Date.now },
   },
-  idProduct: String,
-  date_create: { type: Date, default: Date.now },
-});
+  { collection: "blogs" }
+);
 const LikeAndCommentSchema = new Schema({
   idProduct: String,
   comments: [
@@ -385,7 +388,7 @@ const LikeAndComment = mongoose.model(
   "LikeAndCommentSchema",
   LikeAndCommentSchema
 );
-const Blog = mongoose.model("blog", BlogSchema);
+const Blog = mongoose.model("blogs", BlogSchema);
 const OTP = mongoose.model("Otp", otpSchema);
 const User = mongoose.model("User", UserSchema);
 const Brands = mongoose.model("brands", BrandsSchema);
