@@ -26,6 +26,31 @@ const getAllBlog = async (req, res, next) => {
     });
   }
 };
+const getNewBlog = async (req, res, next) => {
+  try {
+    const page = req.query.page || 1;
+    const limit = req.query.limit || process.env.LIMIT;
+    const data = await Blog.find()
+      .sort({ date_create: -1 })
+      .skip((page - 1) * limit)
+      .limit(limit);
+    const totalPages = Math.ceil(data.length / limit);
+    if (data.length === 0) {
+      res.status(404).json({ message: "Không có bài blog nào" });
+      return;
+    }
+    res.json({
+      total: data.length,
+      totalPage: totalPages,
+      data: data,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      message: "Lỗi xử lý vui lòng thử lại sau",
+    });
+  }
+};
 const getBlogByIdProduct = async (req, res) => {
   try {
     const { id } = req.params;
@@ -60,6 +85,7 @@ const getBlogById = async (req, res, next) => {
   } catch (err) {
     console.log(err);
     res.status(500).json({
+      error: err,
       message: "Lỗi xử lý vui lòng thử lại sau !!!!",
     });
   }
@@ -136,4 +162,5 @@ module.exports = {
   getBlogByName,
   getBlogByIdProduct,
   getBlogByIdProduct,
+  getNewBlog,
 };
