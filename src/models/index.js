@@ -383,6 +383,27 @@ const adminOnline = new Schema({
   name: String,
   date_create: { type: Date, default: Date.now() },
 });
+const InvoiceSchema = new Schema(
+  {
+    userId: String,
+    total: String,
+    name: String,
+    phone: String,
+    address: String,
+    email: String,
+    pdf: String,
+    listProduct: [
+      {
+        name: String,
+        total: String,
+        idProduct: String,
+      },
+    ],
+    date_create: { type: Date, default: Date.now },
+  },
+  { collection: "invoices" }
+);
+const Invoice = mongoose.model("invoices", InvoiceSchema);
 const AdminOnline = mongoose.model("AdminOnline", adminOnline);
 const LikeAndComment = mongoose.model(
   "LikeAndCommentSchema",
@@ -427,4 +448,5 @@ module.exports = {
   Blog,
   LikeAndComment,
   AdminOnline,
+  Invoice,
 };

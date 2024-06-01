@@ -23,6 +23,7 @@ const cookieParser = require("cookie-parser");
 const routerToken = require("./service/apiCheckToken");
 const routerBlog = require("./service/apiBlog");
 const routerComment = require("./service/apiComment");
+const invoicesRouter = require("./service/apiInvoice");
 const http = require("http").createServer(app);
 const io = require("socket.io")(http);
 global.io = io;
@@ -128,6 +129,7 @@ app.use("/upload/", routerUpload);
 app.use("/token/", routerToken);
 app.use("/blog/", routerBlog);
 app.use("/comment/", routerComment);
+app.use("/invoices", invoicesRouter);
 
 io.on("connection", (socket) => {
   console.log("a user connected");

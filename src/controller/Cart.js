@@ -38,7 +38,9 @@
 
 // module.exports = { addToCart, viewCart };
 // controllers/cartController.js
-const { User, Cart } = require("../models");
+const { User, Cart, Invoice } = require("../models");
+const nodemailer = require("nodemailer");
+const { createToPdf } = require("./invoicesController");
 const LIMIT = 10;
 const addToCart = async (req, res) => {
   try {
@@ -81,6 +83,8 @@ const addToCart = async (req, res) => {
         },
       },
     });
+
+    await createToPdf(userId, total, name, phone, address, email, listProduct);
 
     return res.json({
       message: "Mua hàng thành công",
