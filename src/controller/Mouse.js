@@ -2,6 +2,7 @@ const multer = require("multer");
 const { Mouse } = require("../models/");
 const fs = require("fs");
 const { createComment } = require("./likeAndComment");
+const initRedis = require("../lib/init.redis");
 const LIMIT = 10;
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -17,20 +18,43 @@ const getDataMouse = async (req, res, next) => {
   try {
     const { page, limit } = req.query;
     const pageNumber = parseInt(page) || 1;
-    const totalDocuments = await Mouse.countDocuments({});
-    const totalPages = Math.ceil(totalDocuments / LIMIT);
-    const getData = await Mouse.find({})
-      .skip((pageNumber - 1) * LIMIT)
-      .limit(limit || LIMIT);
-    if (getData.length <= 0) {
-      return res.status(404).json({
-        message: "Không có dữ liệu !!",
-      });
-    }
-    return res.json({
-      total: getData.length,
-      totalPage: totalPages,
-      data: getData,
+    const cacheKey = `mouse${pageNumber ? `?page=${pageNumber}` : "?page="}${
+      limit ? `&limit=${limit}` : "&limit="
+    }`;
+    const redisClient = initRedis.getRedis().product;
+    await redisClient.get(cacheKey, async (err, cacheData) => {
+      if (err) {
+        console.error("Redis GET error:", err);
+        return res.status(500).json({ message: "Redis error", error: err });
+      }
+      if (cacheData) {
+        return res.json(JSON.parse(cacheData));
+      } else {
+        const totalDocuments = await Mouse.countDocuments({});
+        const totalPages = Math.ceil(totalDocuments / LIMIT);
+        const getData = await Mouse.find({})
+          .skip((pageNumber - 1) * LIMIT)
+          .limit(limit || LIMIT);
+        if (getData.length <= 0) {
+          return res.status(404).json({
+            message: "Không có dữ liệu !!",
+          });
+        }
+        await redisClient.setex(
+          cacheKey,
+          1800,
+          JSON.stringify({
+            total: getData.length,
+            totalPage: totalPages,
+            data: getData,
+          })
+        );
+        return res.json({
+          total: getData.length,
+          totalPage: totalPages,
+          data: getData,
+        });
+      }
     });
   } catch (err) {
     return res.status(500).json({

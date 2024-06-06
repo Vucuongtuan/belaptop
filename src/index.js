@@ -131,6 +131,7 @@ app.use("/blog/", routerBlog);
 app.use("/comment/", routerComment);
 app.use("/invoices", invoicesRouter);
 
+//create connections socket.io
 io.on("connection", (socket) => {
   console.log("a user connected");
 
@@ -142,6 +143,11 @@ io.on("connection", (socket) => {
     console.log("user disconnected");
   });
 });
+
+//create and config redis
+const initRedis = require("./lib/init.redis");
+initRedis.initRedis();
+
 //run server
 const port = 4000;
 http.listen(port, function () {

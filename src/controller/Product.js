@@ -3,26 +3,53 @@ const { ProductLaptop } = require("../models/");
 const path = require("path");
 const fs = require("fs");
 const { createComment } = require("./likeAndComment");
+const initRedis = require("../lib/init.redis");
 const LIMIT = 10;
+
 const getProduct = async (req, res, next) => {
   try {
     const { page, limit } = req.query;
     const pageNumber = parseInt(page) || 1;
-    const totalDocuments = await ProductLaptop.countDocuments({});
-    const totalPages = Math.ceil(totalDocuments / LIMIT);
-    const getProduct = await ProductLaptop.find({})
-      .skip((pageNumber - 1) * LIMIT)
-      .limit(limit || LIMIT);
 
-    if (getProduct.length === 0) {
-      return res.status(404).json({
-        message: "Không có sản phẩm nào!!!",
-      });
-    }
-    return res.json({
-      total: getProduct.length,
-      totalPage: totalPages,
-      data: getProduct,
+    const cacheKey = `laptop${pageNumber ? `?page=${pageNumber}` : "?page="}${
+      limit ? `&limit=${limit}` : "&limit="
+    }`;
+    const redisClient = initRedis.getRedis().product;
+    await redisClient.get(cacheKey, async (err, cacheData) => {
+      if (err) {
+        console.error("Redis GET error:", err);
+        return res.status(500).json({ message: "Redis error", error: err });
+      }
+      if (cacheData) {
+        return res.json(JSON.parse(cacheData));
+      } else {
+        const totalDocuments = await ProductLaptop.countDocuments({});
+        const totalPages = Math.ceil(totalDocuments / LIMIT);
+        const getProduct = await ProductLaptop.find({})
+          .skip((pageNumber - 1) * LIMIT)
+          .limit(limit || LIMIT);
+
+        if (getProduct.length === 0) {
+          return res.status(404).json({
+            message: "Không có sản phẩm nào!!!",
+          });
+        }
+
+        await redisClient.setex(
+          cacheKey,
+          1800,
+          JSON.stringify({
+            total: getProduct.length,
+            totalPage: totalPages,
+            data: getProduct,
+          })
+        );
+        return res.json({
+          total: getProduct.length,
+          totalPage: totalPages,
+          data: getProduct,
+        });
+      }
     });
   } catch (err) {
     console.log("====================================");

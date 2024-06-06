@@ -2,6 +2,7 @@ const multer = require("multer");
 const fs = require("fs");
 const path = require("path");
 const { BannerQc } = require("../models/");
+const initRedis = require("../lib/init.redis");
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "src/assets/image/banner");
@@ -14,14 +15,26 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage }).single("thumbnail");
 const getBannerQc = async (req, res, next) => {
   try {
-    let getData = await BannerQc.find({});
-
-    if (getData.length === 0) {
-      return res.json({
-        message: "Không có dữ liệu nào ",
-      });
-    }
-    return res.json(getData);
+    const cacheKey = `banner`;
+    const redisClient = initRedis.getRedis().product;
+    await redisClient.get(cacheKey, async (err, cacheData) => {
+      if (err) {
+        console.error("Redis GET error:", err);
+        return res.status(500).json({ message: "Redis error", error: err });
+      }
+      if (cacheData) {
+        return res.json(JSON.parse(cacheData));
+      } else {
+        let getData = await BannerQc.find({});
+        if (getData.length === 0) {
+          return res.json({
+            message: "Không có dữ liệu nào ",
+          });
+        }
+        await redisClient.setex(cacheKey, 1000, JSON.stringify(getData));
+        return res.json(getData);
+      }
+    });
   } catch (err) {
     return res.status(500).json({
       message: "Lỗi kết nối đến server !!!",
