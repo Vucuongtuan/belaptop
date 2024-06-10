@@ -170,9 +170,8 @@ const updateBlog = async (req, res, next) => {
         message: "Thiếu hình ảnh.",
       });
     }
-
-    const { id, title, description, body, author, idAuthor, idProduct } =
-      req.body;
+    const { id } = req.params;
+    const { title, description, body, author, idAuthor, idProduct } = req.body;
     const slug = slugify(title, {
       replacement: "-",
       remove: undefined,
