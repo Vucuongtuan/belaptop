@@ -158,10 +158,58 @@ const createBlog = async (req, res, next) => {
   }
 };
 
+const updateBlog = async (req, res, next) => {
+  try {
+    const reqFile = req.file;
+
+    const parts = reqFile.originalname.split(".");
+    const ext = parts[parts.length - 1];
+    fs.renameSync(reqFile.path, reqFile.path + "." + ext);
+    if (!reqFile.filename) {
+      return res.status(400).json({
+        message: "Thiếu hình ảnh.",
+      });
+    }
+
+    const { id, title, description, body, author, idAuthor, idProduct } =
+      req.body;
+    const slug = slugify(title, {
+      replacement: "-",
+      remove: undefined,
+      lower: false,
+      strict: false,
+      locale: "vi",
+      trim: true,
+    });
+    const post = await Blog.findByIdAndUpdate(
+      { _id: id },
+      {
+        title,
+        description,
+        slug,
+        body,
+        thumbnail:
+          process.env.BASE_URL + "/image/" + reqFile.filename + "." + ext,
+        author,
+        idAuthor,
+        idProduct,
+        date_create: Date.now(),
+      }
+    );
+    res.json(post);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      message: "Lỗi xử lý vui lòng thử lại sau !!!",
+    });
+  }
+};
+
 module.exports = {
   getAllBlog,
   getBlogById,
   createBlog,
+  updateBlog,
   getBlogByName,
   getBlogByIdProduct,
   getBlogByIdProduct,
