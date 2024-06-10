@@ -7,6 +7,7 @@ const getAllBlog = async (req, res, next) => {
   try {
     const page = req.query.page || 1;
     const data = await Blog.find()
+      .sort({ date_create: -1 })
       .skip((page - 1) * process.env.LIMIT)
       .limit(process.env.LIMIT);
     const countDocument = await Blog.countDocuments();
