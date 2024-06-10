@@ -17,6 +17,6 @@ routerBlog.get("/new", getNewBlog);
 routerBlog.post("/name", getBlogByName);
 routerBlog.post("/:id", getBlogById);
 routerBlog.post("/product/:id", getBlogByIdProduct);
-routerBlog.put("/update/:id", updateBlog);
+routerBlog.put("/update/:id", upload.single("thumbnail"), updateBlog);
 
 module.exports = routerBlog;

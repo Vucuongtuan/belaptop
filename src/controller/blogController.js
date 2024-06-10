@@ -161,7 +161,6 @@ const createBlog = async (req, res, next) => {
 const updateBlog = async (req, res, next) => {
   try {
     const reqFile = req.file;
-
     const parts = reqFile.originalname.split(".");
     const ext = parts[parts.length - 1];
     fs.renameSync(reqFile.path, reqFile.path + "." + ext);
