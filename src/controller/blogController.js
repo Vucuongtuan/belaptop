@@ -9,11 +9,13 @@ const getAllBlog = async (req, res, next) => {
     const data = await Blog.find()
       .skip((page - 1) * process.env.LIMIT)
       .limit(process.env.LIMIT);
-    const totalPages = Math.ceil(data.length / process.env.LIMIT);
+    const countDocument = await Blog.countDocuments();
+    const totalPages = Math.ceil(countDocument / process.env.LIMIT);
     if (data.length === 0) {
       res.status(404).json({ message: "Không có bài blog nào" });
       return;
     }
+
     res.json({
       total: data.length,
       totalPage: totalPages,
