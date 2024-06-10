@@ -152,6 +152,6 @@ initRedis.initRedis();
 const port = 4000;
 http.listen(port, function () {
   console.log("====================================");
-  console.log("Run server on port " + port);
+  console.log("Run server on port :" + port);
   console.log("====================================");
 });
