@@ -38,7 +38,7 @@
 
 // module.exports = { addToCart, viewCart };
 // controllers/cartController.js
-const { User, Cart, Invoice } = require("../models");
+const { User, Cart, Invoice, Hoadon } = require("../models");
 const nodemailer = require("nodemailer");
 const { createToPdf } = require("./invoicesController");
 const LIMIT = 10;
@@ -86,6 +86,15 @@ const addToCart = async (req, res) => {
 
     await createToPdf(userId, total, name, phone, address, email, listProduct);
 
+    await Hoadon.create({
+      name,
+      phone,
+      address,
+      email,
+      status: "Đang đóng gói",
+      total: total,
+      items: listProduct,
+    });
     return res.json({
       message: "Mua hàng thành công",
       data: cartUpdate,
@@ -114,9 +123,9 @@ const getAllHoaDon = async (req, res) => {
   try {
     const { page, limit } = req.query;
     const pageNumber = parseInt(page) || 1;
-    const totalDocuments = await Cart.countDocuments({});
+    const totalDocuments = await Hoadon.countDocuments({});
     const totalPages = Math.ceil(totalDocuments / LIMIT);
-    const get = await Cart.find({})
+    const get = await Hoadon.find({})
       .skip((pageNumber - 1) * LIMIT)
       .limit(limit || LIMIT);
 
@@ -125,6 +134,7 @@ const getAllHoaDon = async (req, res) => {
         message: "Không có sản phẩm nào!!!",
       });
     }
+
     return res.json({
       message: "Lấy all hóa đơn thành công",
       page: page || 1,
@@ -158,18 +168,19 @@ const getHoaDonByUser = async (req, res) => {
 const updateHoaDonByUser = async (req, res) => {
   try {
     const { id, idItem, status } = req.body;
-    const get = await User.findById(id);
-    const idCart = get.cartID;
-    const update = await Cart.findOneAndUpdate(
-      { idCart, "items._id": idItem },
+
+    const update = await Hoadon.findOneAndUpdate(
+      { id, "items._id": idItem },
       { $set: { "items.$.status": status } },
       { new: true }
     );
+
     if (update === null) {
       res.json({
         message: "Sửa status thất bại",
         status: 404,
       });
+      return;
     }
     return res.json({
       status: 200,

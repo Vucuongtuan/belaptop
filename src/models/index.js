@@ -403,6 +403,26 @@ const InvoiceSchema = new Schema(
   },
   { collection: "invoices" }
 );
+const HoadonSchema = new Schema({
+  name: String,
+  email: String,
+  phone: String,
+  address: String,
+  invoice: String,
+  status: String,
+  total: Number,
+  items: [
+    {
+      idProduct: String,
+      thumbnail: String,
+      name: String,
+      total: Number,
+      description: String,
+      quantity: Number,
+    },
+  ],
+});
+const Hoadon = mongoose.model("Hoadon", HoadonSchema);
 const Invoice = mongoose.model("invoices", InvoiceSchema);
 const AdminOnline = mongoose.model("AdminOnline", adminOnline);
 const LikeAndComment = mongoose.model(
@@ -449,4 +469,5 @@ module.exports = {
   LikeAndComment,
   AdminOnline,
   Invoice,
+  Hoadon,
 };
