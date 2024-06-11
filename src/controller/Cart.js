@@ -130,7 +130,8 @@ const getAllHoaDon = async (req, res) => {
       .limit(limit || LIMIT);
 
     if (get.length === 0) {
-      return res.status(404).json({
+      return res.json({
+        status: 404,
         message: "Không có sản phẩm nào!!!",
       });
     }
