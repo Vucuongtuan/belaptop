@@ -167,9 +167,8 @@ const updateBlog = async (req, res, next) => {
         message: "Thiếu hình ảnh.",
       });
     }
-
-    const { id, title, description, body, author, idAuthor, idProduct } =
-      req.body;
+    const { id } = req.params;
+    const { title, description, body, author, idAuthor, idProduct } = req.body;
     const slug = slugify(title, {
       replacement: "-",
       remove: undefined,
@@ -179,7 +178,7 @@ const updateBlog = async (req, res, next) => {
       trim: true,
     });
     const update = await Blog.findByIdAndUpdate(
-      id,
+      { _id: id },
       {
         title,
         description,
@@ -193,6 +192,7 @@ const updateBlog = async (req, res, next) => {
       },
       { new: true }
     );
+
     res.json(update);
   } catch (err) {
     console.log(err);
