@@ -165,7 +165,14 @@ const updateHoaDonByUser = async (req, res) => {
       { $set: { "items.$.status": status } },
       { new: true }
     );
+    if (update === null) {
+      res.json({
+        message: "Sửa status thất bại",
+        status: 404,
+      });
+    }
     return res.json({
+      status: 200,
       message: "Cập nhật thành công",
       data: update,
     });

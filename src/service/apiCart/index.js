@@ -14,5 +14,5 @@ routerCart.get("/", viewCart);
 routerCart.get("/all", getAllHoaDon);
 routerCart.post("/", getHoaDonByUser);
 routerCart.post("/add", updateProduct, addToCart);
-routerCart.post("/update", updateHoaDonByUser);
+routerCart.put("/update", updateHoaDonByUser);
 module.exports = routerCart;

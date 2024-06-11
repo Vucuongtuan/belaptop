@@ -161,7 +161,7 @@ const updateBlog = async (req, res, next) => {
     const reqFile = req.file;
     const parts = reqFile.originalname.split(".");
     const ext = parts[parts.length - 1];
-    fs.renameSync(reqFile.path, reqFile.path + "." + ext);
+    fs.renameSync(reqFile.path, reqFile.path + "." + "webp");
     if (!reqFile.filename) {
       return res.status(400).json({
         message: "Thiếu hình ảnh.",
