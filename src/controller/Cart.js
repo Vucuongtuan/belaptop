@@ -94,6 +94,7 @@ const addToCart = async (req, res) => {
       status: "Đang đóng gói",
       total: total,
       items: listProduct,
+      idUser: userId, 
     });
     return res.json({
       message: "Mua hàng thành công",

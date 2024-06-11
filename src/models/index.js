@@ -411,6 +411,7 @@ const HoadonSchema = new Schema({
   invoice: String,
   status: String,
   total: Number,
+  idUser: String,
   items: [
     {
       idProduct: String,
