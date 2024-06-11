@@ -94,7 +94,7 @@ const addToCart = async (req, res) => {
       status: "Đang đóng gói",
       total: total,
       items: listProduct,
-      idUser: userId, 
+      idUser: userId,
     });
     return res.json({
       message: "Mua hàng thành công",
@@ -169,11 +169,11 @@ const getHoaDonByUser = async (req, res) => {
 };
 const updateHoaDonByUser = async (req, res) => {
   try {
-    const { id, idItem, status } = req.body;
+    const { id, idUser, status } = req.body;
 
     const update = await Hoadon.findOneAndUpdate(
-      { id, "items._id": idItem },
-      { $set: { "items.$.status": status } },
+      { _id: id },
+      { $set: { status: status } },
       { new: true }
     );
 
