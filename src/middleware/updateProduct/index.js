@@ -38,8 +38,8 @@ const updateProduct = async (req, res, next) => {
       await Mouse.updateMany(
         { _id: mouse._id },
         {
-          totalPurchases: laptop.totalPurchases + 1,
-          inventory: laptop.inventory - 1,
+          totalPurchases: mouse.totalPurchases + 1,
+          inventory: mouse.inventory - 1,
         }
       );
       next();
@@ -55,8 +55,8 @@ const updateProduct = async (req, res, next) => {
       await Keybourd.updateMany(
         { _id: keyboard._id },
         {
-          totalPurchases: laptop.totalPurchases + 1,
-          inventory: laptop.inventory - 1,
+          totalPurchases: keyboard.totalPurchases + 1,
+          inventory: keyboard.inventory - 1,
         }
       );
       next();
