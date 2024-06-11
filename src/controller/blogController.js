@@ -1,8 +1,9 @@
 const { Blog } = require("../models");
 const fs = require("fs");
 const { getAllProduct } = require("./AllProductController");
-const { Mongoose } = require("mongoose");
+const { Mongoose, default: mongoose } = require("mongoose");
 const { default: slugify } = require("slugify");
+const { ObjectId } = require("mongodb");
 const getAllBlog = async (req, res, next) => {
   try {
     const page = req.query.page || 1;
@@ -113,9 +114,6 @@ const getBlogByName = async (req, res, next) => {
   }
 };
 const createBlog = async (req, res, next) => {
-  console.log("====================================");
-  console.log("fsdfds");
-  console.log("====================================");
   try {
     const reqFile = req.file;
 
@@ -169,8 +167,9 @@ const updateBlog = async (req, res, next) => {
         message: "Thiếu hình ảnh.",
       });
     }
-    const { id } = req.params;
-    const { title, description, body, author, idAuthor, idProduct } = req.body;
+
+    const { id, title, description, body, author, idAuthor, idProduct } =
+      req.body;
     const slug = slugify(title, {
       replacement: "-",
       remove: undefined,
@@ -179,8 +178,8 @@ const updateBlog = async (req, res, next) => {
       locale: "vi",
       trim: true,
     });
-    const post = await Blog.findByIdAndUpdate(
-      { _id: id },
+    const update = await Blog.findByIdAndUpdate(
+      id,
       {
         title,
         description,
@@ -191,10 +190,10 @@ const updateBlog = async (req, res, next) => {
         author,
         idAuthor,
         idProduct,
-        date_create: Date.now(),
-      }
+      },
+      { new: true }
     );
-    res.json(post);
+    res.json(update);
   } catch (err) {
     console.log(err);
     res.status(500).json({
