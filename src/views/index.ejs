@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <style>
+    main {
+      height: auto;
+      width: 800px;
+      margin: auto;
+    }
+    table {
+      width: 100%;
+      text-align: left;
+      border-collapse: collapse;
+    }
+  </style>
+  <body>
+    <main class="">
+      <h1><%= message %></h1>
+      <h2>Get</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>Api</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Get all product</td>
+            <td>
+              <a
+                href="https://vtc-be-laptop.onrender.com/all-product"
+                target="_blank"
+              >
+                /all-product
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <td>Get laptop</td>
+            <td>
+              <a
+                href="https://vtc-be-laptop.onrender.com/product/laptop"
+                target="_blank"
+              >
+                /product/laptop
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <td>Get mouse</td>
+            <td>
+              <a
+                href="https://vtc-be-laptop.onrender.com/product/mouse"
+                target="_blank"
+              >
+                /product/mouse
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <td>Get keyboard</td>
+            <td>
+              <a
+                href="https://vtc-be-laptop.onrender.com/product/keyboard"
+                target="_blank"
+              >
+                /product/keyboard
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <td>Get blog</td>
+            <td>
+              <a
+                href="https://vtc-be-laptop.onrender.com/blog/all"
+                target="_blank"
+              >
+                /blog/all
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <h2>Insert</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>Api</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Insert laptop</td>
+            <td>
+              <a
+                href="https://vtc-be-laptop.onrender.com/product/laptop"
+                target="_blank"
+              >
+                /product/laptop
+              </a>
+              (body)
+            </td>
+          </tr>
+          <tr>
+            <td>Insert mouse</td>
+            <td>
+              <a
+                href="https://vtc-be-laptop.onrender.com/product/mouse"
+                target="_blank"
+              >
+                /product/mouse
+              </a>
+              (body)
+            </td>
+          </tr>
+          <tr>
+            <td>Insert keyboard</td>
+            <td>
+              <a
+                href="https://vtc-be-laptop.onrender.com/product/keyboard"
+                target="_blank"
+              >
+                /product/keyboard
+              </a>
+              (body)
+            </td>
+          </tr>
+          <tr>
+            <td>Insert blog</td>
+            <td>
+              <a
+                href="https://vtc-be-laptop.onrender.com/blog/create"
+                target="_blank"
+              >
+                /blog/create
+              </a>
+              (body)
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <h2>Update</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>Api</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Update laptop</td>
+            <td>
+              <a
+                href="https://vtc-be-laptop.onrender.com/product/laptop"
+                target="_blank"
+              >
+                /product/laptop/id?id=(id Product)
+              </a>
+              (query) | (body)
+            </td>
+          </tr>
+          <tr>
+            <td>Update mouse</td>
+            <td>
+              <a
+                href="https://vtc-be-laptop.onrender.com/product/mouse"
+                target="_blank"
+              >
+                /product/mouse/id?id=(id Product)
+              </a>
+              (query) | (body)
+            </td>
+          </tr>
+          <tr>
+            <td>Update keyboard</td>
+            <td>
+              <a
+                href="https://vtc-be-laptop.onrender.com/product/keyboard"
+                target="_blank"
+              >
+                /product/keyboard/id?id=(id Product)
+              </a>
+              (query) | (body)
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <h2>Delete</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>Api</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Delete laptop</td>
+            <td>
+              <a
+                href="https://vtc-be-laptop.onrender.com/product/laptop"
+                target="_blank"
+              >
+                /product/laptop/id?id=(id Product)
+              </a>
+              (query)
+            </td>
+          </tr>
+          <tr>
+            <td>Delete mouse</td>
+            <td>
+              <a
+                href="https://vtc-be-laptop.onrender.com/product/mouse"
+                target="_blank"
+              >
+                /product/mouse/id?id=(id Product)
+              </a>
+              (query)
+            </td>
+          </tr>
+          <tr>
+            <td>Delete keyboard</td>
+            <td>
+              <a
+                href="https://vtc-be-laptop.onrender.com/product/keyboard"
+                target="_blank"
+              >
+                /product/keyboard/id?id=(id Product)
+              </a>
+              (query)
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <h2>Account</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>Api</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>login</td>
+            <td>
+              <a
+                href="https://vtc-be-laptop.onrender.com/account/login"
+                target="_blank"
+              >
+                /account/login
+              </a>
+              (body)
+            </td>
+          </tr>
+          <tr>
+            <td>resgiter</td>
+            <td>
+              <a
+                href="https://vtc-be-laptop.onrender.com/account"
+                target="_blank"
+              >
+                /account
+              </a>
+              (body)
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </main>
+  </body>
+</html>

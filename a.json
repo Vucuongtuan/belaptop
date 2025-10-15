@@ -1,0 +1,160 @@
+[
+  {
+    "_id": {
+      "$oid": "660542cad8c2ee8e08f13b3c"
+    },
+    "name": "Cuonggg",
+    "email": "vucuongtuansin1@gmail.com",
+    "phone": 34534534,
+    "address": "Nam dinh",
+    "items": [
+      {
+        "products": [
+          {
+            "thumbnail": "https://vtc-be-laptop.onrender.com/image/laptop/637903794789323641_Macbook Air M2 -3.webp",
+            "description": "Không chỉ khơi gợi cảm hứng qua việc cách tân thiết kế, MacBook Air M2 2022 còn chứa đựng nguồn sức mạnh lớn lao với chip M2 siêu mạnh, thời lượng pin chạm  ngưỡng 18 giờ, màn hình Liquid Retina tuyệt đẹp và hệ thống camera kết hợp cùng âm thanh tân tiến",
+            "name": "MacBook Air 13 inch M2 2022 8CPU 8GPU 8GB/256GB",
+            "total": 28490500,
+            "quantity": 1
+          }
+        ],
+        "status": "Đang đóng gói",
+        "_id": {
+          "$oid": "65e9765d09a60b2eaa681063"
+        }
+      },
+      {
+        "products": [
+          {
+            "quantity": 1,
+            "_id": {
+              "$oid": "6625197bba32076c0b6d50a4"
+            }
+          }
+        ],
+        "status": "pending",
+        "_id": {
+          "$oid": "665757fa4957df9e53313269"
+        }
+      }
+    ],
+    "__v": 0,
+    "total": 28490500
+  },
+  {
+    "_id": {
+      "$oid": "660a6abcb0c1f1eeb0a98131"
+    },
+    "name": "Cuong",
+    "email": "vutuann23@gmail.com",
+    "phone": 971622846,
+    "address": "Namdinh",
+    "items": [],
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "6627c56d543c5dacf6214665"
+    },
+    "name": "vucuong",
+    "email": "vucuongtuan03@gmail.com",
+    "phone": 123123123,
+    "address": "nam dinh",
+    "items": [],
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "663b8c893527494deebd3ae7"
+    },
+    "name": "Cuonggg",
+    "email": "vucuongtuan00@gmail.com",
+    "phone": {
+      "$numberLong": "123123234235"
+    },
+    "address": "Nam dinh",
+    "items": [],
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "663b8dd3d10caa638f7ecac0"
+    },
+    "name": "Cuonggg",
+    "email": "vucuongtuan00@gmail.com",
+    "phone": {
+      "$numberLong": "34643634634"
+    },
+    "address": "Nam dinh",
+    "items": [],
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "663b8e2d8156d4615917dcd4"
+    },
+    "name": "Cuonggg",
+    "email": "vucuongtuan00@gmail.com",
+    "phone": {
+      "$numberLong": "34643634634"
+    },
+    "address": "Nam dinh",
+    "items": [],
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "663b8e5c842df19890c1edbc"
+    },
+    "name": "Cuonggg",
+    "email": "vucuongtuan00@gmail.com",
+    "phone": {
+      "$numberLong": "34643634634"
+    },
+    "address": "Nam dinh",
+    "items": [],
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "663b8eda0a5530ea6ee7bc3e"
+    },
+    "name": "Cuonggg",
+    "email": "vucuongtuan00@gmail.com",
+    "phone": {
+      "$numberLong": "34643634634"
+    },
+    "address": "Nam dinh",
+    "items": [],
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "663b8f9274f9cf9ee715f157"
+    },
+    "name": "Cuonggg",
+    "email": "vucuongtuan00@gmail.com",
+    "phone": 34534534,
+    "address": "Nam dinh",
+    "items": [
+      {
+        "products": [
+          {
+            "thumbnail": "https://vtc-be-laptop.onrender.com/image/laptop/637903794789323641_Macbook Air M2 -3.webp",
+            "description": "Không chỉ khơi gợi cảm hứng qua việc cách tân thiết kế, MacBook Air M2 2022 còn chứa đựng nguồn sức mạnh lớn lao với chip M2 siêu mạnh, thời lượng pin chạm  ngưỡng 18 giờ, màn hình Liquid Retina tuyệt đẹp và hệ thống camera kết hợp cùng âm thanh tân tiến",
+            "name": "MacBook Air 13 inch M2 2022 8CPU 8GPU 8GB/256GB",
+            "total": 28490500,
+            "quantity": 1
+          }
+        ],
+
+        "status": "Đang đóng gói",
+        "_id": {
+          "$oid": "65e9765d09a60b2eaa681063"
+        }
+      }
+    ],
+    "__v": 0,
+    "total": 28490500
+  }
+]
